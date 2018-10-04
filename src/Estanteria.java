@@ -33,35 +33,26 @@ public class Estanteria {
 
 	/**
 	 * Entra por parametros una String con un titulo, y te devuelve el objeto libro exacto
-	 * @param nombre
+	 * @param posicion
 	 * @return
 	 */
-	public Libro buscarLibro(String nombre) {
-		int loc = 0;
-		while (loc < max_Reg) {
-			if (libros[loc] != null)
-				if (libros[loc].getTitulo().equals(nombre)) {
-					return libros[loc];
-				}
-			loc++;
-		} 
-		return null;
+	public Libro buscarLibro(int posicion) {
+		if (posicion != -1) return libros[posicion];
+		else return null;
 	}
 	
 	
 	/**
 	 * 
-	 * @param nombre
+	 * @param posicion
 	 * @return 1 en caso de borrar el libro, 0 en caso de error
 	 */
 	/*
 	 * Puesto que para borrar necesito una posición exacta, llamo al metodo buscarLibro que me la devuelve a 
 	 * través de un nombre
 	 */
-	public int borrarLibro(String nombre) {
-		int loc = 0;
-		loc = posicionLibro(nombre);
-		libros[loc] = libros[reg - 1];
+	public int borrarLibro(int posicion) {
+		libros[posicion] = libros[reg - 1];
 		reg--;
 		return 1;
 	}
@@ -71,22 +62,22 @@ public class Estanteria {
 	 * @param nombre
 	 * @return La posición del libro, en caso de que esté, o -1 si no está
 	 */
-	private int posicionLibro(String nombre) {
-		int loc = 0;
-		while (loc < max_Reg) {
-			if (libros[loc] != null) {
-				if (nombre.equals(libros[loc].getTitulo())) {
-					return loc;
-				} 
-				else {
-					loc++;
-				} 
-			} 
-			else
-				loc++;
-		} 
-		return -1;
-	}
+//	private int posicionLibro(String nombre) {
+//		int loc = 0;
+//		while (loc < max_Reg) {
+//			if (libros[loc] != null) {
+//				if (nombre.equals(libros[loc].getTitulo())) {
+//					return loc;
+//				} 
+//				else {
+//					loc++;
+//				} 
+//			} 
+//			else
+//				loc++;
+//		} 
+//		return -1;
+//	}
 	
 	private int posicionLibro(int Isbn) {
 		int loc = 0;

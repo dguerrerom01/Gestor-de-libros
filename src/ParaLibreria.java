@@ -10,7 +10,7 @@ public class ParaLibreria extends Libreria {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				listLibros.getSelectedIndex();
-				enviarDatosAPantalla(estanteria.buscarLibro(listLibros.getSelectedValue().toString()));
+				enviarDatosAPantalla(estanteria.buscarLibro(listLibros.getSelectedIndex()));
 			}
 		});
 
@@ -25,7 +25,7 @@ public class ParaLibreria extends Libreria {
 			public void actionPerformed(ActionEvent arg0) {
 				int borrarDisponible = listLibros.getSelectedIndex();
 				if (borrarDisponible != -1) {
-					estanteria.borrarLibro(listLibros.getSelectedValue().toString());
+					estanteria.borrarLibro(listLibros.getSelectedIndex());
 					dlmNombres.remove(borrarDisponible);
 					listLibros.repaint();
 					limpiarPantalla();
