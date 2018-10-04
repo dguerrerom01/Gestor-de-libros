@@ -36,16 +36,23 @@ public class ParaLibreria extends Libreria {
 		btnAlta.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int estado = 0;
-				estado = estanteria.insertarLibro(recogerDatosPantalla());
-				if (estado == 1) {
-					lblMensaje.setText("Libro almacenado correctamente");
-					dlmNombres.addElement(txtTitulo.getText());
-					listLibros.setModel(dlmNombres);
-				} else if (estado == -1)
-					lblMensaje.setText("El libro ya existe");
-				else if (estado == 0)
-					lblMensaje.setText("No hay espacio para mas libros");
+				if (txtIsbn.getText().matches("\\d{13}") &&
+						!txtTitulo.getText().isEmpty() &&
+						!txtAutor.getText().isEmpty() &&
+						txtNumPaginas.getText().matches("\\d{1,9}") &&
+						(chkCartone.isSelected() || chkRustica.isSelected() || chkTapaDura.isSelected()) &&
+						(optNovedad.isSelected() || optReedicion.isSelected())) {
+					int estado = 0;
+					estado = estanteria.insertarLibro(recogerDatosPantalla());
+					if (estado == 1) {
+						lblMensaje.setText("Libro almacenado correctamente");
+						dlmNombres.addElement(txtTitulo.getText());
+						listLibros.setModel(dlmNombres);
+					} else if (estado == -1)
+						lblMensaje.setText("El libro ya existe");
+					else if (estado == 0)
+						lblMensaje.setText("No hay espacio para mas libros");
+				} else lblMensaje.setText("Ha ocurrido un error");
 			}
 		});
 		
@@ -54,13 +61,31 @@ public class ParaLibreria extends Libreria {
 				System.exit(EXIT_ON_CLOSE);
 			}
 		});
+		
+		txtIsbn.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				if (txtIsbn.getText().length() == 13) {
+					arg0.consume();
+				}
+			}
+		});
+		
+		txtNumPaginas.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				if (txtNumPaginas.getText().length() == 9) {
+					arg0.consume();
+				}
+			}
+		});
 	}
 
 	
 	private Libro recogerDatosPantalla() {
 		Libro libro;
 		libro = new Libro();
-		libro.setIsbn(Integer.valueOf(txtIsbn.getText()));
+		libro.setIsbn(txtIsbn.getText());
 		libro.setTitulo(txtTitulo.getText());
 		libro.setAutor(txtAutor.getText());
 		try {

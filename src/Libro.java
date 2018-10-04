@@ -1,7 +1,7 @@
 
 public class Libro {
 
-	private int isbn;
+	private String isbn;
 	private String titulo;
 	private String autor;
 	private String tema;
@@ -12,11 +12,11 @@ public class Libro {
 
 	// GETTERS AND SETTERS
 	
-	public int getIsbn() {
+	public String getIsbn() {
 		return isbn;
 	}
 
-	public void setIsbn(int isbn) {
+	public void setIsbn(String isbn) {
 		this.isbn = isbn;
 	}
 

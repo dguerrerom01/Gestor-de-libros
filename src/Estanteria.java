@@ -41,7 +41,6 @@ public class Estanteria {
 		else return null;
 	}
 	
-	
 	/**
 	 * 
 	 * @param posicion
@@ -57,33 +56,11 @@ public class Estanteria {
 		return 1;
 	}
 	
-	/**
-	 * Introduce un nombre de un libro por parametros y lo busca
-	 * @param nombre
-	 * @return La posición del libro, en caso de que esté, o -1 si no está
-	 */
-//	private int posicionLibro(String nombre) {
-//		int loc = 0;
-//		while (loc < max_Reg) {
-//			if (libros[loc] != null) {
-//				if (nombre.equals(libros[loc].getTitulo())) {
-//					return loc;
-//				} 
-//				else {
-//					loc++;
-//				} 
-//			} 
-//			else
-//				loc++;
-//		} 
-//		return -1;
-//	}
-	
-	private int posicionLibro(int Isbn) {
+	private int posicionLibro(String Isbn) {
 		int loc = 0;
 		while (loc < max_Reg) {
 			if (libros[loc] != null) {
-				if (Isbn == libros[loc].getIsbn()) {
+				if (Isbn.equals(libros[loc].getIsbn())) {
 					return loc;
 				} 
 				else {
