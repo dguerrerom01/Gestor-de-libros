@@ -34,7 +34,7 @@ public class Libreria extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
-		gbl_contentPane.columnWidths = new int[]{0, 0, 196};
+		gbl_contentPane.columnWidths = new int[]{196, 134, 196};
 		gbl_contentPane.rowHeights = new int[]{0, 0};
 		gbl_contentPane.columnWeights = new double[]{1.0, 0.0, 1.0};
 		gbl_contentPane.rowWeights = new double[]{0.0, Double.MIN_VALUE};
@@ -73,6 +73,8 @@ public class Libreria extends JFrame {
 		panelLibro.add(lblIsbn, gbc_lblIsbn);
 		
 		txtIsbn = new JTextField();
+		txtIsbn.setPreferredSize(new Dimension(110, 22));
+		txtIsbn.setMaximumSize(new Dimension(180, 2147483647));
 		txtIsbn.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		GridBagConstraints gbc_txtIsbn = new GridBagConstraints();
 		gbc_txtIsbn.insets = new Insets(5, 5, 5, 5);
@@ -160,7 +162,6 @@ public class Libreria extends JFrame {
 		
 		JPanel panelCaracteristicas = new JPanel();
 		GridBagConstraints gbc_panelCaracteristicas = new GridBagConstraints();
-		gbc_panelCaracteristicas.anchor = GridBagConstraints.WEST;
 		gbc_panelCaracteristicas.gridheight = 2;
 		gbc_panelCaracteristicas.insets = new Insets(0, 0, 5, 5);
 		gbc_panelCaracteristicas.fill = GridBagConstraints.VERTICAL;
@@ -176,8 +177,7 @@ public class Libreria extends JFrame {
 		
 		JPanel panelFormato = new JPanel();
 		GridBagConstraints gbc_panelFormato = new GridBagConstraints();
-		gbc_panelFormato.anchor = GridBagConstraints.WEST;
-		gbc_panelFormato.fill = GridBagConstraints.VERTICAL;
+		gbc_panelFormato.fill = GridBagConstraints.BOTH;
 		gbc_panelFormato.insets = new Insets(0, 0, 5, 0);
 		gbc_panelFormato.gridx = 0;
 		gbc_panelFormato.gridy = 0;
@@ -220,15 +220,14 @@ public class Libreria extends JFrame {
 		JPanel panelEstado = new JPanel();
 		panelEstado.setBorder(new TitledBorder(null, "Estado", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_panelEstado = new GridBagConstraints();
-		gbc_panelEstado.anchor = GridBagConstraints.WEST;
-		gbc_panelEstado.fill = GridBagConstraints.VERTICAL;
+		gbc_panelEstado.fill = GridBagConstraints.BOTH;
 		gbc_panelEstado.gridx = 0;
 		gbc_panelEstado.gridy = 1;
 		panelCaracteristicas.add(panelEstado, gbc_panelEstado);
 		GridBagLayout gbl_panelEstado = new GridBagLayout();
 		gbl_panelEstado.columnWidths = new int[]{0, 0};
 		gbl_panelEstado.rowHeights = new int[]{0, 0, 0};
-		gbl_panelEstado.columnWeights = new double[]{0.0, Double.MIN_VALUE};
+		gbl_panelEstado.columnWeights = new double[]{1.0, Double.MIN_VALUE};
 		gbl_panelEstado.rowWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
 		panelEstado.setLayout(gbl_panelEstado);
 		
@@ -353,6 +352,7 @@ public class Libreria extends JFrame {
 		lblMensaje = new JLabel(" ");
 		lblMensaje.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		GridBagConstraints gbc_lblMensaje = new GridBagConstraints();
+		gbc_lblMensaje.anchor = GridBagConstraints.WEST;
 		gbc_lblMensaje.insets = new Insets(0, 5, 5, 5);
 		gbc_lblMensaje.gridwidth = 3;
 		gbc_lblMensaje.gridx = 0;

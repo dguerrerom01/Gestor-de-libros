@@ -45,14 +45,15 @@ public class ParaLibreria extends Libreria {
 					int estado = 0;
 					estado = estanteria.insertarLibro(recogerDatosPantalla());
 					if (estado == 1) {
-						lblMensaje.setText("Libro almacenado correctamente");
 						dlmNombres.addElement(txtTitulo.getText());
 						listLibros.setModel(dlmNombres);
+						limpiarPantalla();
+						lblMensaje.setText("Libro almacenado correctamente");
 					} else if (estado == -1)
 						lblMensaje.setText("El libro ya existe");
 					else if (estado == 0)
 						lblMensaje.setText("No hay espacio para mas libros");
-				} else lblMensaje.setText("Ha ocurrido un error");
+				} else lblMensaje.setText("Ha ocurrido un error: revise los campos");
 			}
 		});
 		
