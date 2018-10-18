@@ -1,3 +1,4 @@
+package control;
 import java.awt.EventQueue;
 
 public class Main {

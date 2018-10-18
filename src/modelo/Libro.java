@@ -1,3 +1,4 @@
+package modelo;
 
 public class Libro {
 
@@ -5,10 +6,11 @@ public class Libro {
 	private String titulo;
 	private String autor;
 	private String tema;
+	private int posicionTema;
 	private int numPaginas;
-	private String[] formato = new String[3];
-	private String[] estado = new String[2];
-	private int locTema;
+	private int ejemplares;
+	private Boolean[] formato = new Boolean[3];
+	private Boolean[] estado = new Boolean[2];
 
 	// GETTERS AND SETTERS
 	
@@ -23,7 +25,6 @@ public class Libro {
 	public String getTitulo() {
 		return titulo;
 	}
-
 
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
@@ -53,27 +54,36 @@ public class Libro {
 		this.numPaginas = numPaginas;
 	}
 
-	public String getFormato(int posicion) {
+	public int getEjemplares() {
+		return ejemplares;
+	}
+
+	public void setEjemplares(int ejemplares) {
+		this.ejemplares = ejemplares;
+	}
+
+	public Boolean getFormato(int posicion) {
 		return formato[posicion];
 	}
 
-	public void setFormato(int posicion, String formato) {
+	public void setFormato(int posicion, Boolean formato) {
 		this.formato[posicion] = formato;
 	}
 
-	public String getEstado(int posicion) {
+	public Boolean getEstado(int posicion) {
 		return estado[posicion];
 	}
 
-	public void setEstado(int posicion, String estado) {
+	public void setEstado(int posicion, Boolean estado) {
 		this.estado[posicion] = estado;
 	}
 
-	public int getLocTema() {
-		return locTema;
+	public int getPosicionTema() {
+		return posicionTema;
 	}
 
-	public void setLocTema(int locTema) {
-		this.locTema = locTema;
+	public void setPosicionTema(int locTema) {
+		this.posicionTema = locTema;
 	}
+	
 }
