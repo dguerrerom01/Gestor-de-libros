@@ -31,7 +31,7 @@ public class ParaLibreria extends Libreria {
 						escribirMensaje(Mensajes.AVISOISBNEXISTENTE);
 						deshabilitarText(false, txtTitulo, txtAutor, txtNumPaginas);
 						deshabilitarCombo(false, comboTemas);
-						deshabilitarCheck(false, chkCartone, chkRustica, chkTapaDura);
+						deshabilitarCheck(false, chkCartone, chkRustica, chkGrapado, chkEspiral);
 						deshabilitarOption(false, optNovedad, optReedicion);
 						esconderLabel(true, lblEjemplares);
 						esconderText(true, txtEjemplares);
@@ -39,12 +39,12 @@ public class ParaLibreria extends Libreria {
 						cambiarNombreButton(btnAlta, "Actualizar");
 						if (Integer.valueOf(txtEjemplares.getText()) > 1) {
 							cambiarNombreButton(btnBaja, "Reducir");
-						}
+						} else cambiarNombreButton(btnBaja, "Baja");
 					} else {
 						escribirMensaje(Mensajes.MENSAJEVACIO);
 						deshabilitarText(true, txtTitulo, txtAutor, txtNumPaginas);
 						deshabilitarCombo(true, comboTemas);
-						deshabilitarCheck(true, chkCartone, chkRustica, chkTapaDura);
+						deshabilitarCheck(true, chkCartone, chkRustica, chkGrapado, chkEspiral);
 						deshabilitarOption(true, optNovedad, optReedicion);
 						esconderLabel(false, lblEjemplares);
 						esconderText(false, txtEjemplares);
@@ -67,7 +67,7 @@ public class ParaLibreria extends Libreria {
 					enviarDatosAPantalla(estanteria.getLibros().get(listLibros.getSelectedIndex()));
 					deshabilitarText(false, txtIsbn, txtTitulo, txtAutor, txtNumPaginas);
 					deshabilitarCombo(false, comboTemas);
-					deshabilitarCheck(false, chkCartone, chkRustica, chkTapaDura);
+					deshabilitarCheck(false, chkCartone, chkRustica, chkGrapado, chkEspiral);
 					deshabilitarOption(false, optNovedad, optReedicion);
 					esconderLabel(true, lblEjemplares);
 					esconderText(true, txtEjemplares);
@@ -75,7 +75,7 @@ public class ParaLibreria extends Libreria {
 					cambiarNombreButton(btnAlta, "Actualizar");
 					if (Integer.valueOf(txtEjemplares.getText()) > 1) {
 						cambiarNombreButton(btnBaja, "Reducir");
-					}
+					} else cambiarNombreButton(btnBaja, "Baja");
 				}
 			}
 		});
@@ -88,7 +88,7 @@ public class ParaLibreria extends Libreria {
 				limpiarPantalla();
 				deshabilitarText(true, txtIsbn, txtTitulo, txtAutor, txtNumPaginas);
 				deshabilitarCombo(true, comboTemas);
-				deshabilitarCheck(true, chkCartone, chkRustica, chkTapaDura);
+				deshabilitarCheck(true, chkCartone, chkRustica, chkGrapado, chkEspiral);
 				deshabilitarOption(true, optNovedad, optReedicion);
 				esconderLabel(false, lblEjemplares);
 				esconderText(false, txtEjemplares);
@@ -135,7 +135,7 @@ public class ParaLibreria extends Libreria {
 						!txtTitulo.getText().isEmpty() &&
 						!txtAutor.getText().isEmpty() &&
 						txtNumPaginas.getText().matches("\\d{1,9}") &&
-						(chkCartone.isSelected() || chkRustica.isSelected() || chkTapaDura.isSelected()) &&
+						(chkCartone.isSelected() || chkRustica.isSelected() || chkGrapado.isSelected() || chkEspiral.isSelected()) &&
 						(optNovedad.isSelected() || optReedicion.isSelected())) {
 					if (estanteria.buscarLibro(txtIsbn.getText()) == null) {
 						if (estanteria.insertarLibro(recogerDatosPantalla())) {
@@ -179,7 +179,7 @@ public class ParaLibreria extends Libreria {
 					deshabilitarText(false, txtIsbn);
 					deshabilitarText(true, txtTitulo, txtAutor, txtNumPaginas);
 					deshabilitarCombo(true, comboTemas);
-					deshabilitarCheck(true, chkCartone, chkRustica, chkTapaDura);
+					deshabilitarCheck(true, chkCartone, chkRustica, chkGrapado, chkEspiral);
 					deshabilitarOption(true, optNovedad, optReedicion);
 					escribirMensaje(Mensajes.AVISOEDICION);
 				} else {
@@ -187,7 +187,7 @@ public class ParaLibreria extends Libreria {
 							!txtTitulo.getText().isEmpty() &&
 							!txtAutor.getText().isEmpty() &&
 							txtNumPaginas.getText().matches("\\d{1,9}") &&
-							(chkCartone.isSelected() || chkRustica.isSelected() || chkTapaDura.isSelected()) &&
+							(chkCartone.isSelected() || chkRustica.isSelected() || chkGrapado.isSelected() || chkEspiral.isSelected()) &&
 							(optNovedad.isSelected() || optReedicion.isSelected())) {
 						cambiarNombreButton(btnEditar, "Editar");
 						estanteria.editarLibro(recogerDatosPantalla());
@@ -197,7 +197,7 @@ public class ParaLibreria extends Libreria {
 						deshabilitarButton(true, btnAlta, btnBaja);
 						deshabilitarText(false, txtTitulo, txtAutor, txtNumPaginas);
 						deshabilitarCombo(false, comboTemas);
-						deshabilitarCheck(false, chkCartone, chkRustica, chkTapaDura);
+						deshabilitarCheck(false, chkCartone, chkRustica, chkGrapado, chkEspiral);
 						deshabilitarOption(false, optNovedad, optReedicion);
 						escribirMensaje(Mensajes.EDICIONCORRECTA);
 					} else escribirMensaje(Mensajes.ERRORVALIDACION);
@@ -274,19 +274,23 @@ public class ParaLibreria extends Libreria {
 				lblTitulo.setFont(fuenteComponente);
 				lblTema.setFont(fuenteComponente);
 				lblAutor.setFont(fuenteComponente);
+				lblEditorial.setFont(fuenteComponente);
 				lblNumPaginas.setFont(fuenteComponente);
 				lblEjemplares.setFont(fuenteComponente);
+				lblLibros.setFont(fuenteComponente);
 				lblMensaje.setFont(fuenteMensaje);
 				listLibros.setFont(fuenteComponente);
 				txtIsbn.setFont(fuenteComponente);
 				txtTitulo.setFont(fuenteComponente);
 				txtAutor.setFont(fuenteComponente);
+				txtEditorial.setFont(fuenteComponente);
 				txtNumPaginas.setFont(fuenteComponente);
 				txtEjemplares.setFont(fuenteComponente);
 				comboTemas.setFont(fuenteComponente);
 				chkCartone.setFont(fuenteComponente);
 				chkRustica.setFont(fuenteComponente);
-				chkTapaDura.setFont(fuenteComponente);
+				chkGrapado.setFont(fuenteComponente);
+				chkEspiral.setFont(fuenteComponente);
 				optNovedad.setFont(fuenteComponente);
 				optReedicion.setFont(fuenteComponente);
 				btnEditar.setFont(fuenteComponente);
@@ -308,18 +312,22 @@ public class ParaLibreria extends Libreria {
 		libro.setIsbn(txtIsbn.getText());
 		libro.setTitulo(txtTitulo.getText());
 		libro.setAutor(txtAutor.getText());
+		libro.setEditorial(txtEditorial.getText());
 		try {
 			libro.setNumPaginas(Integer.valueOf((txtNumPaginas.getText())));
 		} catch (NumberFormatException e) {
 			libro.setNumPaginas(0);
 		}
-		libro.setEjemplares(1);
+		if (!txtEjemplares.getText().isEmpty()) {
+			libro.setEjemplares(Integer.valueOf(txtEjemplares.getText()));
+		} else libro.setEjemplares(1);
 		String temaSeleccionado = comboTemas.getSelectedItem().toString();
 		libro.setTema(temaSeleccionado);
 		libro.setPosicionTema(comboTemas.getSelectedIndex());
 		libro.setFormato(0, chkCartone.isSelected() ? true : false);
 		libro.setFormato(1, chkRustica.isSelected() ? true : false);
-		libro.setFormato(2, chkTapaDura.isSelected() ? true: false);
+		libro.setFormato(2, chkGrapado.isSelected() ? true: false);
+		libro.setFormato(3, chkEspiral.isSelected() ? true: false);
 		libro.setEstado(0, optNovedad.isSelected() ? true : false);
 		libro.setEstado(1, optReedicion.isSelected() ? true : false);
 		return libro;
@@ -332,12 +340,14 @@ public class ParaLibreria extends Libreria {
 		txtIsbn.setText(null);
 		txtTitulo.setText(null);
 		txtAutor.setText(null);
+		txtEditorial.setText(null);
 		txtNumPaginas.setText(null);
 		txtEjemplares.setText(null);
 		comboTemas.setSelectedIndex(0);
 		chkCartone.setSelected(false);
 		chkRustica.setSelected(false);
-		chkTapaDura.setSelected(false);
+		chkGrapado.setSelected(false);
+		chkEspiral.setSelected(false);
 		optNovedad.setSelected(false);
 		optReedicion.setSelected(false);
 		escribirMensaje(Mensajes.MENSAJEVACIO);
@@ -352,12 +362,14 @@ public class ParaLibreria extends Libreria {
 		txtIsbn.setText(String.valueOf(libro.getIsbn()));
 		txtTitulo.setText(libro.getTitulo());
 		txtAutor.setText(libro.getAutor());
+		txtEditorial.setText(libro.getEditorial());
 		txtNumPaginas.setText(String.valueOf(libro.getNumPaginas()));
 		txtEjemplares.setText(String.valueOf(libro.getEjemplares()));
 		comboTemas.setSelectedIndex(libro.getPosicionTema());
 		chkCartone.setSelected(libro.getFormato(0));
 		chkRustica.setSelected(libro.getFormato(1));
-		chkTapaDura.setSelected(libro.getFormato(2));
+		chkGrapado.setSelected(libro.getFormato(2));
+		chkEspiral.setSelected(libro.getFormato(2));
 		optNovedad.setSelected(libro.getEstado(0));
 		optReedicion.setSelected(libro.getEstado(1));
 	}

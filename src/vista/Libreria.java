@@ -12,6 +12,7 @@ public class Libreria extends JFrame {
 	protected JTextField txtIsbn;
 	protected JTextField txtTitulo;
 	protected JTextField txtAutor;
+	protected JTextField txtEditorial;
 	protected JTextField txtNumPaginas;
 	protected JTextField txtEjemplares;
 	protected JComboBox comboTemas;
@@ -25,15 +26,18 @@ public class Libreria extends JFrame {
 	protected JLabel lblTitulo;
 	protected JLabel lblTema;
 	protected JLabel lblAutor;
+	protected JLabel lblEditorial;
 	protected JLabel lblNumPaginas;
 	protected JLabel lblEjemplares;
 	protected JLabel lblLibros;
 	protected JLabel lblMensaje;
 	protected JRadioButton optNovedad;
 	protected JRadioButton optReedicion;
-	protected JCheckBox chkTapaDura;
 	protected JCheckBox chkRustica;
 	protected JCheckBox chkCartone;
+	protected JCheckBox chkGrapado;
+	protected JCheckBox chkEspiral;
+	
 	protected JList listLibros;
 	
 	protected DefaultListModel<String> dlmNombres = new DefaultListModel<>();
@@ -49,6 +53,9 @@ public class Libreria extends JFrame {
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 //		setBounds(100, 100, 450, 300);
 		setBounds(100, 100, 575, 525);
+		
+		menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(0, 5, 0, 5));
 		setContentPane(contentPane);
@@ -60,7 +67,7 @@ public class Libreria extends JFrame {
 		
 		JPanel panelDatos = new JPanel();
 		contentPane.add(panelDatos, "cell 0 1 1 2,grow");
-		panelDatos.setLayout(new MigLayout("", "[45px,grow]", "[grow 10,shrink 1][grow 10,shrink 1][grow 10,shrink 1][grow 10,shrink 1][grow 10,shrink 1]"));
+		panelDatos.setLayout(new MigLayout("", "[45px,grow]", "[grow 10,shrink 1][grow 10,shrink 1][grow 10,shrink 1][grow 10,shrink 1][grow 10][grow 10,shrink 1]"));
 		
 		lblIsbn = new JLabel("ISBN:");
 		lblIsbn.setFont(new Font("Tahoma", Font.PLAIN, fuenteComponente));
@@ -78,9 +85,13 @@ public class Libreria extends JFrame {
 		lblAutor.setFont(new Font("Tahoma", Font.PLAIN, fuenteComponente));
 		panelDatos.add(lblAutor, "flowx,cell 0 3,alignx right,aligny center");
 		
+		lblEditorial = new JLabel("Editorial:");
+		lblEditorial.setFont(new Font("Tahoma", Font.PLAIN, fuenteComponente));
+		panelDatos.add(lblEditorial, "flowx,cell 0 4,aligny center");
+		
 		lblNumPaginas = new JLabel("<html>N\u00FAmero<br>p\u00E1ginas:</html>");
 		lblNumPaginas.setFont(new Font("Tahoma", Font.PLAIN, fuenteComponente));
-		panelDatos.add(lblNumPaginas, "flowx,cell 0 4,alignx left,aligny center");
+		panelDatos.add(lblNumPaginas, "flowx,cell 0 5,alignx left,aligny center");
 		
 		txtIsbn = new JTextField();
 		txtIsbn.setMaximumSize(new Dimension(100, 2147483647));
@@ -93,7 +104,7 @@ public class Libreria extends JFrame {
 		txtNumPaginas.setMaximumSize(new Dimension(65, 2147483647));
 		txtNumPaginas.setMinimumSize(new Dimension(65, 5));
 		txtNumPaginas.setFont(new Font("Tahoma", Font.PLAIN, fuenteComponente));
-		panelDatos.add(txtNumPaginas, "cell 0 4,alignx left,aligny center");
+		panelDatos.add(txtNumPaginas, "cell 0 5,alignx left,aligny center");
 		txtNumPaginas.setColumns(10);
 		
 		txtAutor = new JTextField();
@@ -115,7 +126,7 @@ public class Libreria extends JFrame {
 		lblEjemplares.setVisible(false);
 		lblEjemplares.setEnabled(false);
 		lblEjemplares.setFont(new Font("Tahoma", Font.PLAIN, fuenteComponente));
-		panelDatos.add(lblEjemplares, "cell 0 4,alignx left,aligny center");
+		panelDatos.add(lblEjemplares, "cell 0 5,alignx left,aligny center");
 		
 		txtEjemplares = new JTextField();
 		txtEjemplares.setVisible(false);
@@ -124,7 +135,7 @@ public class Libreria extends JFrame {
 		txtEjemplares.setFont(new Font("Tahoma", Font.PLAIN, fuenteComponente));
 		txtEjemplares.setEditable(false);
 		txtEjemplares.setMaximumSize(new Dimension(65, 2147483647));
-		panelDatos.add(txtEjemplares, "cell 0 4,alignx left,aligny center");
+		panelDatos.add(txtEjemplares, "cell 0 5,alignx left,aligny center");
 		txtEjemplares.setColumns(10);
 		
 		JLabel dummy = new JLabel(" ");
@@ -134,6 +145,11 @@ public class Libreria extends JFrame {
 		btnEditar.setVisible(false);
 		btnEditar.setFont(new Font("Tahoma", Font.PLAIN, fuenteComponente));
 		panelDatos.add(btnEditar, "cell 0 0,alignx right,aligny center");
+		
+		txtEditorial = new JTextField();
+		txtEditorial.setFont(new Font("Tahoma", Font.PLAIN, fuenteComponente));
+		panelDatos.add(txtEditorial, "cell 0 4,growx,aligny center");
+		txtEditorial.setColumns(10);
 		
 		splitPane = new JSplitPane();
 		splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
@@ -157,9 +173,13 @@ public class Libreria extends JFrame {
 		chkRustica.setFont(new Font("Tahoma", Font.PLAIN, fuenteComponente));
 		panelFormato.add(chkRustica, "cell 0 1");
 		
-		chkTapaDura = new JCheckBox("Tapa dura");
-		chkTapaDura.setFont(new Font("Tahoma", Font.PLAIN, fuenteComponente));
-		panelFormato.add(chkTapaDura, "cell 0 2");
+		chkGrapado = new JCheckBox("Grapado");
+		chkGrapado.setFont(new Font("Tahoma", Font.PLAIN, fuenteComponente));
+		panelFormato.add(chkGrapado, "flowy,cell 0 2");
+		
+		chkEspiral = new JCheckBox("Espiral");
+		chkEspiral.setFont(new Font("Tahoma", Font.PLAIN, fuenteComponente));
+		panelFormato.add(chkEspiral, "cell 0 2");
 		
 		JPanel panelEsado = new JPanel();
 		panelEsado.setBorder(new TitledBorder(null, "Estado", TitledBorder.LEFT, TitledBorder.TOP, null, null));
@@ -227,5 +247,5 @@ public class Libreria extends JFrame {
 			}
 	    }
 	};
-
+	private JMenuBar menuBar;
 }

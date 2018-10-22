@@ -6,10 +6,11 @@ public class Libro {
 	private String titulo;
 	private String autor;
 	private String tema;
+	private String editorial;
 	private int posicionTema;
 	private int numPaginas;
 	private int ejemplares;
-	private Boolean[] formato = new Boolean[3];
+	private Boolean[] formato = new Boolean[4];
 	private Boolean[] estado = new Boolean[2];
 
 	// GETTERS AND SETTERS
@@ -44,6 +45,14 @@ public class Libro {
 
 	public void setTema(String tema) {
 		this.tema = tema;
+	}
+	
+	public String getEditorial() {
+		return editorial;
+	}
+
+	public void setEditorial(String editorial) {
+		this.editorial = editorial;
 	}
 
 	public int getNumPaginas() {
