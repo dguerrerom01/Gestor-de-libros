@@ -1,7 +1,5 @@
-package control;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
+package controlador;
+import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
@@ -14,6 +12,189 @@ public class ParaLibreria extends Libreria {
 	Estanteria estanteria = new Estanteria();
 
 	public ParaLibreria() {
+		
+		cargaDlmNombres();
+		
+		/**
+		 * Accion al seleccionar el boton Nuevo libro
+		 */
+		mntmNuevoLibro.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				limpiarPantalla();
+				deshabilitarText(true, txtIsbn, txtTitulo, txtAutor, txtEditorial, txtNumPaginas);
+				deshabilitarCombo(true, comboTemas);
+				deshabilitarCheck(true, chkCartone, chkRustica, chkGrapado, chkEspiral);
+				deshabilitarOption(true, optNovedad, optReedicion);
+				deshabilitarMenuItem(false, mntmAgregarEjemplares, mntmDarDeBaja, mntmRetirarEjemplares, mntmModificarLibro);
+				esconderLabel(false, lblEjemplares);
+				esconderText(false, txtEjemplares);
+				esconderButton(false, btnGuardar);
+			}
+		});
+		
+		
+		/**
+		 * Accion al seleccionar el boton Salir
+		 */
+		mntmSalir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int seleccion = JOptionPane.showConfirmDialog(null, "¿Desea salir de la aplicación?", "Salir", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
+		        if (seleccion == JOptionPane.YES_OPTION){
+		        	System.exit(EXIT_ON_CLOSE);
+				}
+			}
+		});
+		
+		
+		/**
+		 * Accion al seleccionar el boton Dar de alta
+		 */
+		mntmDarDeAlta.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (comprobarLibro()) {
+					if (estanteria.buscarLibro(txtIsbn.getText()) == null) {
+						if (estanteria.insertarLibro(recogerDatosPantalla())) {
+							dlmNombres.addElement(txtTitulo.getText() + " - " + txtIsbn.getText());
+							listLibros.setModel(dlmNombres);
+							limpiarPantalla();
+							escribirMensaje(Mensajes.LIBROAGREGADO);
+						} else escribirMensaje(Mensajes.ERRORAGREGARLIBRO);
+					} else escribirMensaje(Mensajes.ERRORISBNDUPLICADO); // No necesario?
+				} else escribirMensaje(Mensajes.ERRORVALIDACION);
+			}
+		});
+		
+		
+		/**
+		 * Accion al seleccionar el boton Agregar ejemplares
+		 */
+		mntmAgregarEjemplares.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int cantidad = input("Inserte la cantidad deseada. Actualmente dispone de " + txtEjemplares.getText() + " ejemplares", "Agregar ejemplares");
+				System.out.println("Cantidad : " + cantidad);
+				cantidad += Integer.valueOf(txtEjemplares.getText());
+				System.out.println("total : " + cantidad);
+				if (cantidad > 999999999) {
+					txtEjemplares.setText(String.valueOf(cantidad));
+					estanteria.editarLibro(recogerDatosPantalla());
+					escribirMensaje(Mensajes.CANTIDADACTUALIZADA);
+				} else escribirMensaje(Mensajes.FUERADELIMITES);
+			}
+		});
+		
+		
+		/**
+		 * Accion al seleccionar el boton Dar de baja
+		 */
+		mntmDarDeBaja.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int borrarDisponible = listLibros.getSelectedIndex();
+				if (borrarDisponible != -1) {
+					int seleccion = JOptionPane.showConfirmDialog(null,
+							"¿Desea dar de baja el libro? Le quedan " + txtEjemplares.getText()
+									+ " ejemplares disponibles.",
+							"Dar de baja", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
+					if (seleccion == JOptionPane.YES_OPTION) {
+						estanteria.borrarLibro(estanteria.getLibros().get(listLibros.getSelectedIndex()));
+						dlmNombres.remove(borrarDisponible);
+						listLibros.repaint();
+						limpiarPantalla();
+						deshabilitarText(true, txtIsbn, txtTitulo, txtAutor, txtEditorial, txtNumPaginas);
+						deshabilitarCombo(true, comboTemas);
+						deshabilitarCheck(true, chkCartone, chkRustica, chkGrapado, chkEspiral);
+						deshabilitarOption(true, optNovedad, optReedicion);
+						deshabilitarMenuItem(false, mntmAgregarEjemplares, mntmDarDeBaja, mntmRetirarEjemplares, mntmModificarLibro);
+						esconderLabel(false, lblEjemplares);
+						esconderText(false, txtEjemplares);
+						esconderButton(false, btnGuardar);
+						escribirMensaje(Mensajes.LIBROELIMINADO);
+					}
+				} else
+					escribirMensaje(Mensajes.ERRORINDICE);
+			}
+		});
+		
+		
+		/**
+		 * Accion al seleccionar el boton Retirar ejemplares
+		 */
+		mntmRetirarEjemplares.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int cantidad = input("Inserte la cantidad deseada. Actualmente dispone de " + txtEjemplares.getText() + " ejemplares", "Retirar ejemplares");
+				cantidad = Integer.valueOf(txtEjemplares.getText()) - cantidad;
+				if (cantidad >= 0) {
+					txtEjemplares.setText(String.valueOf(cantidad));
+					estanteria.editarLibro(recogerDatosPantalla());
+					escribirMensaje(Mensajes.CANTIDADACTUALIZADA);
+				} else escribirMensaje(Mensajes.FUERADELIMITES);
+			}
+		});
+		
+		
+		/**
+		 * Accion al seleccionar el boton Modificar libro
+		 */
+		mntmModificarLibro.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+					deshabilitarText(false, txtIsbn);
+					deshabilitarText(true, txtTitulo, txtAutor, txtEditorial, txtNumPaginas);
+					deshabilitarCombo(true, comboTemas);
+					deshabilitarCheck(true, chkCartone, chkRustica, chkGrapado, chkEspiral);
+					deshabilitarOption(true, optNovedad, optReedicion);
+					deshabilitarMenuItem(false, mntmAgregarEjemplares, mntmDarDeBaja, mntmRetirarEjemplares, mntmModificarLibro);
+					esconderButton(true, btnGuardar);
+					escribirMensaje(Mensajes.AVISOEDICION);
+			}
+		});
+		
+		
+		/**
+		 * Accion al seleccionar el boton Editar (guardar)
+		 */
+		btnGuardar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (comprobarLibro()) {
+					estanteria.editarLibro(recogerDatosPantalla());
+					dlmNombres.set(listLibros.getSelectedIndex(), (txtTitulo.getText() + " - " + txtIsbn.getText()));
+					listLibros.repaint();
+					deshabilitarText(false, txtTitulo, txtAutor, txtEditorial, txtNumPaginas);
+					deshabilitarCombo(false, comboTemas);
+					deshabilitarCheck(false, chkCartone, chkRustica, chkGrapado, chkEspiral);
+					deshabilitarOption(false, optNovedad, optReedicion);
+					deshabilitarMenuItem(true, mntmAgregarEjemplares, mntmDarDeBaja, mntmRetirarEjemplares, mntmModificarLibro);
+					esconderButton(false, btnGuardar);
+					escribirMensaje(Mensajes.EDICIONCORRECTA);
+				} else
+					escribirMensaje(Mensajes.ERRORVALIDACION);
+			}
+		});
+		
+		
+		/**
+		 * Accion al seleccionar un libro de la lista
+		 */
+		listLibros.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				if (listLibros.getSelectedIndex() != -1) {
+					escribirMensaje(Mensajes.AVISOLIBROSELECCIONADO);
+					enviarDatosAPantalla(estanteria.getLibros().get(listLibros.getSelectedIndex()));
+					deshabilitarText(false, txtIsbn, txtTitulo, txtAutor, txtEditorial, txtNumPaginas);
+					deshabilitarCombo(false, comboTemas);
+					deshabilitarCheck(false, chkCartone, chkRustica, chkGrapado, chkEspiral);
+					deshabilitarOption(false, optNovedad, optReedicion);
+					deshabilitarMenuItem(false, mntmDarDeAlta);
+					deshabilitarMenuItem(true, mntmAgregarEjemplares, mntmDarDeBaja, mntmRetirarEjemplares, mntmModificarLibro);
+					esconderLabel(true, lblEjemplares);
+					esconderText(true, txtEjemplares);
+					esconderButton(false, btnGuardar);
+				}
+			}
+		});
+		
+		
 		/**
 		 * Accion al escribir en el campo ISBN
 		 */
@@ -29,179 +210,27 @@ public class ParaLibreria extends Libreria {
 							}
 						}
 						escribirMensaje(Mensajes.AVISOISBNEXISTENTE);
-						deshabilitarText(false, txtTitulo, txtAutor, txtNumPaginas);
+						deshabilitarText(false, txtTitulo, txtAutor, txtEditorial, txtNumPaginas);
 						deshabilitarCombo(false, comboTemas);
 						deshabilitarCheck(false, chkCartone, chkRustica, chkGrapado, chkEspiral);
 						deshabilitarOption(false, optNovedad, optReedicion);
+						deshabilitarMenuItem(false, mntmDarDeAlta);
+						deshabilitarMenuItem(true, mntmAgregarEjemplares, mntmDarDeBaja, mntmRetirarEjemplares, mntmModificarLibro);
 						esconderLabel(true, lblEjemplares);
 						esconderText(true, txtEjemplares);
-						esconderButton(true, btnEditar);
-						cambiarNombreButton(btnAlta, "Actualizar");
-						if (Integer.valueOf(txtEjemplares.getText()) > 1) {
-							cambiarNombreButton(btnBaja, "Reducir");
-						} else cambiarNombreButton(btnBaja, "Baja");
+						esconderButton(false, btnGuardar);
 					} else {
 						escribirMensaje(Mensajes.MENSAJEVACIO);
-						deshabilitarText(true, txtTitulo, txtAutor, txtNumPaginas);
+						deshabilitarText(true, txtTitulo, txtAutor, txtEditorial, txtNumPaginas);
 						deshabilitarCombo(true, comboTemas);
 						deshabilitarCheck(true, chkCartone, chkRustica, chkGrapado, chkEspiral);
 						deshabilitarOption(true, optNovedad, optReedicion);
+						deshabilitarMenuItem(true, mntmDarDeAlta);
+						deshabilitarMenuItem(false, mntmAgregarEjemplares, mntmDarDeBaja, mntmRetirarEjemplares, mntmModificarLibro);
 						esconderLabel(false, lblEjemplares);
 						esconderText(false, txtEjemplares);
-						esconderButton(false, btnEditar);
-						cambiarNombreButton(btnAlta, "Alta");
-						cambiarNombreButton(btnBaja, "Baja");
+						esconderButton(false, btnGuardar);
 					}
-				}
-			}
-		});
-		
-		/**
-		 * Accion al seleccionar un libro de la lista
-		 */
-		listLibros.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				if (listLibros.getSelectedIndex() != -1) {
-					escribirMensaje(Mensajes.AVISOLIBROSELECCIONADO);
-					enviarDatosAPantalla(estanteria.getLibros().get(listLibros.getSelectedIndex()));
-					deshabilitarText(false, txtIsbn, txtTitulo, txtAutor, txtNumPaginas);
-					deshabilitarCombo(false, comboTemas);
-					deshabilitarCheck(false, chkCartone, chkRustica, chkGrapado, chkEspiral);
-					deshabilitarOption(false, optNovedad, optReedicion);
-					esconderLabel(true, lblEjemplares);
-					esconderText(true, txtEjemplares);
-					esconderButton(true, btnEditar);
-					cambiarNombreButton(btnAlta, "Actualizar");
-					if (Integer.valueOf(txtEjemplares.getText()) > 1) {
-						cambiarNombreButton(btnBaja, "Reducir");
-					} else cambiarNombreButton(btnBaja, "Baja");
-				}
-			}
-		});
-
-		/**
-		 * Accion al seleccionar el boton Nuevo
-		 */
-		btnNuevo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				limpiarPantalla();
-				deshabilitarText(true, txtIsbn, txtTitulo, txtAutor, txtNumPaginas);
-				deshabilitarCombo(true, comboTemas);
-				deshabilitarCheck(true, chkCartone, chkRustica, chkGrapado, chkEspiral);
-				deshabilitarOption(true, optNovedad, optReedicion);
-				esconderLabel(false, lblEjemplares);
-				esconderText(false, txtEjemplares);
-				esconderButton(false, btnEditar);
-				cambiarNombreButton(btnAlta, "Alta");
-				cambiarNombreButton(btnBaja, "Baja");
-			}
-		});
-
-		/**
-		 * Accion al seleccionar el boton Baja
-		 */
-		btnBaja.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if (Integer.valueOf(txtEjemplares.getText()) > 1) {
-					int cantidad = Integer.parseInt(txtEjemplares.getText()) - 1;
-					txtEjemplares.setText(cantidad + "");
-					estanteria.editarLibro(recogerDatosPantalla());
-					escribirMensaje(Mensajes.CANTIDADACTUALIZADA);
-					if (cantidad < 2) {
-						cambiarNombreButton(btnBaja, "Baja");
-					}
-				} else {
-					int borrarDisponible = listLibros.getSelectedIndex();
-					if (borrarDisponible != -1) {
-						estanteria.borrarLibro(estanteria.getLibros().get(listLibros.getSelectedIndex()));
-						dlmNombres.remove(borrarDisponible);
-						listLibros.repaint();
-						limpiarPantalla();
-						escribirMensaje(Mensajes.LIBROELIMINADO);
-					} else escribirMensaje(Mensajes.ERRORINDICE);
-				}
-			}
-		});
-
-		/**
-		 * Accion al seleccionar el boton Alta
-		 */
-		btnAlta.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Refactorizar y mejorar
-				if (txtIsbn.getText().matches("\\d{13}") &&
-						!txtTitulo.getText().isEmpty() &&
-						!txtAutor.getText().isEmpty() &&
-						txtNumPaginas.getText().matches("\\d{1,9}") &&
-						(chkCartone.isSelected() || chkRustica.isSelected() || chkGrapado.isSelected() || chkEspiral.isSelected()) &&
-						(optNovedad.isSelected() || optReedicion.isSelected())) {
-					if (estanteria.buscarLibro(txtIsbn.getText()) == null) {
-						if (estanteria.insertarLibro(recogerDatosPantalla())) {
-							escribirMensaje(Mensajes.LIBROAGREGADO);
-							dlmNombres.addElement(txtTitulo.getText() + " - " + txtIsbn.getText());
-							listLibros.setModel(dlmNombres);
-						} else escribirMensaje(Mensajes.ERRORAGREGARLIBRO);
-					} else {
-						btnBaja.setText("Reducir");
-						int cantidad = Integer.parseInt(txtEjemplares.getText()) + 1;
-						txtEjemplares.setText(cantidad + "");
-						estanteria.editarLibro(recogerDatosPantalla());
-						escribirMensaje(Mensajes.CANTIDADACTUALIZADA);
-					}
-				} else escribirMensaje(Mensajes.ERRORVALIDACION);
-			}
-		});
-		
-		/**
-		 * Accion al seleccionar el boton Salir
-		 */
-		btnSalir.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				int seleccion = JOptionPane.showConfirmDialog(null, "¿Desea salir de la aplicación?", "Salir", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
-		        if (seleccion == JOptionPane.YES_OPTION){
-		        	System.exit(EXIT_ON_CLOSE);
-				}
-			}
-		});
-		
-		/**
-		 * Accion al seleccionar el boton Editar
-		 */
-		btnEditar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (btnEditar.getText().equals("Editar")) {
-					cambiarNombreButton(btnEditar, "Guardar");
-					btnEditar.setText("Guardar");
-					deshabilitarList(false, listLibros);
-					deshabilitarButton(false, btnAlta, btnBaja);
-					deshabilitarText(false, txtIsbn);
-					deshabilitarText(true, txtTitulo, txtAutor, txtNumPaginas);
-					deshabilitarCombo(true, comboTemas);
-					deshabilitarCheck(true, chkCartone, chkRustica, chkGrapado, chkEspiral);
-					deshabilitarOption(true, optNovedad, optReedicion);
-					escribirMensaje(Mensajes.AVISOEDICION);
-				} else {
-					if (txtIsbn.getText().matches("\\d{13}") &&
-							!txtTitulo.getText().isEmpty() &&
-							!txtAutor.getText().isEmpty() &&
-							txtNumPaginas.getText().matches("\\d{1,9}") &&
-							(chkCartone.isSelected() || chkRustica.isSelected() || chkGrapado.isSelected() || chkEspiral.isSelected()) &&
-							(optNovedad.isSelected() || optReedicion.isSelected())) {
-						cambiarNombreButton(btnEditar, "Editar");
-						estanteria.editarLibro(recogerDatosPantalla());
-						dlmNombres.set(listLibros.getSelectedIndex(), (txtTitulo.getText() + " - " + txtIsbn.getText()));
-						listLibros.repaint();
-						deshabilitarList(true, listLibros);
-						deshabilitarButton(true, btnAlta, btnBaja);
-						deshabilitarText(false, txtTitulo, txtAutor, txtNumPaginas);
-						deshabilitarCombo(false, comboTemas);
-						deshabilitarCheck(false, chkCartone, chkRustica, chkGrapado, chkEspiral);
-						deshabilitarOption(false, optNovedad, optReedicion);
-						escribirMensaje(Mensajes.EDICIONCORRECTA);
-					} else escribirMensaje(Mensajes.ERRORVALIDACION);
-					
 				}
 			}
 		});
@@ -293,14 +322,42 @@ public class ParaLibreria extends Libreria {
 				chkEspiral.setFont(fuenteComponente);
 				optNovedad.setFont(fuenteComponente);
 				optReedicion.setFont(fuenteComponente);
-				btnEditar.setFont(fuenteComponente);
-				btnNuevo.setFont(fuenteComponente);
-				btnBaja.setFont(fuenteComponente);
-				btnAlta.setFont(fuenteComponente);
-				btnSalir.setFont(fuenteComponente);
+				btnGuardar.setFont(fuenteComponente);
 			}
 		});
 	}
+
+	private int input(String mensaje, String titulo) {
+		String opcion = JOptionPane.showInputDialog(null, "Inserte la cantidad deseada", "Agregar ejemplares", JOptionPane.PLAIN_MESSAGE);
+		if (opcion == null || opcion.matches("\\d{0,9}")) {
+			if (opcion == null || opcion.isEmpty()) {
+				return 0;
+			} 
+		} else {
+			JOptionPane.showMessageDialog(null, "Cantidad incorrecta o fuera de limites", "Error", JOptionPane.ERROR_MESSAGE);
+			input(mensaje, titulo);
+		}
+		return Integer.valueOf(opcion);
+	}
+
+	private boolean comprobarLibro() {
+		return txtIsbn.getText().matches("\\d{13}")
+				&& !txtTitulo.getText().isEmpty() && !txtAutor.getText().isEmpty() && !txtEditorial.getText().isEmpty()
+				&& txtNumPaginas.getText().matches("\\d{1,9}") && (chkCartone.isSelected() || chkRustica.isSelected()
+						|| chkGrapado.isSelected() || chkEspiral.isSelected())
+				&& (optNovedad.isSelected() || optReedicion.isSelected());
+	}
+	
+	/*
+	 * Listado
+	 */
+	private void cargaDlmNombres() {
+		dlmNombres.clear();
+		for (Libro libros : estanteria.getLibros()) {
+			dlmNombres.addElement(libros.getTitulo() + " - " + libros.getIsbn());
+		}
+	}
+
 
 	/**
 	 * Toma los datos que hay en pantala y los almacena en un Libro
@@ -384,10 +441,6 @@ public class ParaLibreria extends Libreria {
 
 	
 	
-	private void cambiarNombreButton(JButton button, String nombre) {
-		button.setText(nombre);
-	}
-
 	// Metodos para habilitar o deshabilitar componentes en grupo
 	
 	private void deshabilitarText(Boolean activado, JTextField... jtextfields) {
@@ -413,10 +466,10 @@ public class ParaLibreria extends Libreria {
 			jRadioButton.setEnabled(activado);
 		}
 	}
-
-	private void deshabilitarButton(Boolean activado, JButton... jLists) {
-		for (JButton jButton : jLists) {
-			jButton.setEnabled(activado);
+	
+	protected void deshabilitarMenuItem(Boolean activado, JMenuItem... jMenuItems) {
+		for (JMenuItem jMenuItem : jMenuItems) {
+			jMenuItem.setEnabled(activado);
 		}
 	}
 
@@ -445,5 +498,5 @@ public class ParaLibreria extends Libreria {
 			jButton.setVisible(activado);
 		}
 	}
-	
+
 }

@@ -8,6 +8,18 @@ import java.awt.event.*;
 public class Libreria extends JFrame {
 
 	protected JPanel contentPane;
+	protected JMenuBar menuBar;
+	protected JMenu mnAltas;
+	protected JMenuItem mntmDarDeAlta;
+	protected JMenuItem mntmAgregarEjemplares;
+	protected JMenu mnArchivo;
+	protected JMenuItem mntmNuevoLibro;
+	protected JMenu mnBajas;
+	protected JMenuItem mntmDarDeBaja;
+	protected JMenuItem mntmRetirarEjemplares;
+	protected JMenu mnModificar;
+	protected JMenuItem mntmModificarLibro;
+	protected JMenuItem mntmSalir;
 	protected JSplitPane splitPane;
 	protected JTextField txtIsbn;
 	protected JTextField txtTitulo;
@@ -16,11 +28,7 @@ public class Libreria extends JFrame {
 	protected JTextField txtNumPaginas;
 	protected JTextField txtEjemplares;
 	protected JComboBox comboTemas;
-	protected JButton btnNuevo;
-	protected JButton btnBaja;
-	protected JButton btnAlta;
-	protected JButton btnSalir;
-	protected JButton btnEditar;
+	protected JButton btnGuardar;
 	protected JLabel lblLibreria;
 	protected JLabel lblIsbn;
 	protected JLabel lblTitulo;
@@ -37,7 +45,6 @@ public class Libreria extends JFrame {
 	protected JCheckBox chkCartone;
 	protected JCheckBox chkGrapado;
 	protected JCheckBox chkEspiral;
-	
 	protected JList listLibros;
 	
 	protected DefaultListModel<String> dlmNombres = new DefaultListModel<>();
@@ -56,17 +63,62 @@ public class Libreria extends JFrame {
 		
 		menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
+		
+		mnArchivo = new JMenu("Archivo");
+		menuBar.add(mnArchivo);
+		
+		mntmNuevoLibro = new JMenuItem("Nuevo libro");
+		mnArchivo.add(mntmNuevoLibro);
+		
+		mntmSalir = new JMenuItem("Salir");
+		mnArchivo.add(mntmSalir);
+		
+		mnAltas = new JMenu("Altas");
+		menuBar.add(mnAltas);
+		
+		mntmDarDeAlta = new JMenuItem("Dar de alta");
+		mnAltas.add(mntmDarDeAlta);
+		
+		mntmAgregarEjemplares = new JMenuItem("Agregar ejemplares");
+		mntmAgregarEjemplares.setEnabled(false);
+		mnAltas.add(mntmAgregarEjemplares);
+		
+		mnBajas = new JMenu("Bajas");
+		menuBar.add(mnBajas);
+		
+		mntmDarDeBaja = new JMenuItem("Dar de baja");
+		mntmDarDeBaja.setEnabled(false);
+		mnBajas.add(mntmDarDeBaja);
+		
+		mntmRetirarEjemplares = new JMenuItem("Retirar ejemplares");
+		mntmRetirarEjemplares.setEnabled(false);
+		mnBajas.add(mntmRetirarEjemplares);
+		
+		mnModificar = new JMenu("Modificar");
+		menuBar.add(mnModificar);
+		
+		mntmModificarLibro = new JMenuItem("Modificar libro");
+		mntmModificarLibro.setEnabled(false);
+		mnModificar.add(mntmModificarLibro);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(0, 5, 0, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(new MigLayout("", "[229px,grow][92px,grow]", "[16px][155.00px,grow,shrink 10,fill][238px,grow,fill][156px,grow,fill][16px]"));
+		contentPane.setLayout(new MigLayout("", "[92px,grow]", "[16px][155.00px,grow,shrink 10,fill][238px,grow,fill][156px,grow,fill][16px]"));
 		
 		lblLibreria = new JLabel("Librer\u00EDa");
 		lblLibreria.setFont(new Font("Tahoma", Font.BOLD, fuenteTitulo));
-		contentPane.add(lblLibreria, "cell 0 0 2 1,alignx center,aligny center");
+		contentPane.add(lblLibreria, "cell 0 0,alignx center,aligny center");
+		
+		splitPane = new JSplitPane();
+		splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
+		contentPane.add(splitPane, "cell 0 1 1 3,grow");
+		
+		JPanel panelCaracteristicas = new JPanel();
+		splitPane.setLeftComponent(panelCaracteristicas);
+		panelCaracteristicas.setLayout(new MigLayout("", "[grow,fill][grow]", "[grow 10,shrink 1,fill][grow 10,shrink 1,fill]"));
 		
 		JPanel panelDatos = new JPanel();
-		contentPane.add(panelDatos, "cell 0 1 1 2,grow");
+		panelCaracteristicas.add(panelDatos, "cell 0 0 1 2");
 		panelDatos.setLayout(new MigLayout("", "[45px,grow]", "[grow 10,shrink 1][grow 10,shrink 1][grow 10,shrink 1][grow 10,shrink 1][grow 10][grow 10,shrink 1]"));
 		
 		lblIsbn = new JLabel("ISBN:");
@@ -141,28 +193,20 @@ public class Libreria extends JFrame {
 		JLabel dummy = new JLabel(" ");
 		panelDatos.add(dummy, "cell 0 0,growx");
 		
-		btnEditar = new JButton("Editar");
-		btnEditar.setVisible(false);
-		btnEditar.setFont(new Font("Tahoma", Font.PLAIN, fuenteComponente));
-		panelDatos.add(btnEditar, "cell 0 0,alignx right,aligny center");
+		btnGuardar = new JButton("Guardar");
+		btnGuardar.setVisible(false);
+		btnGuardar.setFont(new Font("Tahoma", Font.PLAIN, fuenteComponente));
+		panelDatos.add(btnGuardar, "cell 0 0,alignx right,aligny center");
 		
 		txtEditorial = new JTextField();
 		txtEditorial.setFont(new Font("Tahoma", Font.PLAIN, fuenteComponente));
 		panelDatos.add(txtEditorial, "cell 0 4,growx,aligny center");
 		txtEditorial.setColumns(10);
 		
-		splitPane = new JSplitPane();
-		splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
-		contentPane.add(splitPane, "cell 1 1 1 3,grow");
-		
-		JPanel panelCaracteristicas = new JPanel();
-		splitPane.setLeftComponent(panelCaracteristicas);
-		panelCaracteristicas.setLayout(new MigLayout("", "[grow]", "[grow 10,shrink 1,fill][grow 10,shrink 1,fill]"));
-		
 		JPanel panelFormato = new JPanel();
 		panelFormato.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		panelFormato.setBorder(new TitledBorder(null, "Formato", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panelCaracteristicas.add(panelFormato, "cell 0 0,grow");
+		panelCaracteristicas.add(panelFormato, "cell 1 0,grow");
 		panelFormato.setLayout(new MigLayout("", "[]", "[grow 10,shrink 1,fill][grow 10,shrink 1,fill][grow 10,shrink 1,fill]"));
 		
 		chkCartone = new JCheckBox("Carton\u00E9");
@@ -184,7 +228,7 @@ public class Libreria extends JFrame {
 		JPanel panelEsado = new JPanel();
 		panelEsado.setBorder(new TitledBorder(null, "Estado", TitledBorder.LEFT, TitledBorder.TOP, null, null));
 		
-		panelCaracteristicas.add(panelEsado, "cell 0 1,grow");
+		panelCaracteristicas.add(panelEsado, "cell 1 1,grow");
 		panelEsado.setLayout(new MigLayout("", "[]", "[grow,fill][grow,fill]"));
 		
 		optNovedad = new JRadioButton("Novedad");
@@ -212,29 +256,9 @@ public class Libreria extends JFrame {
 		listLibros.setFont(new Font("Tahoma", Font.PLAIN, fuenteComponente));
 		listLibros.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		
-		JPanel panelControl = new JPanel();
-		contentPane.add(panelControl, "cell 0 3,grow");
-		panelControl.setLayout(new MigLayout("", "[grow,right][grow,left]", "[grow,bottom][grow,top]"));
-		
-		btnNuevo = new JButton("Nuevo");
-		btnNuevo.setFont(new Font("Tahoma", Font.PLAIN, fuenteComponente));
-		panelControl.add(btnNuevo, "flowy,cell 0 0,growx");
-		
-		btnBaja = new JButton("Baja");
-		btnBaja.setFont(new Font("Tahoma", Font.PLAIN, fuenteComponente));
-		panelControl.add(btnBaja, "flowx,cell 1 0,growx");
-		
-		btnAlta = new JButton("Alta");
-		btnAlta.setFont(new Font("Tahoma", Font.PLAIN, fuenteComponente));
-		panelControl.add(btnAlta, "cell 0 1,growx");
-		
-		btnSalir = new JButton("Salir");
-		btnSalir.setFont(new Font("Tahoma", Font.PLAIN, fuenteComponente));
-		panelControl.add(btnSalir, "cell 1 1,growx");
-		
-		lblMensaje = new JLabel("mensaje");
+		lblMensaje = new JLabel("\u00A1Bienvenido!");
 		lblMensaje.setFont(new Font("Tahoma", Font.PLAIN, fuenteComponente));
-		contentPane.add(lblMensaje, "flowx,cell 0 4 2 1,growx,aligny center");
+		contentPane.add(lblMensaje, "flowx,cell 0 4,growx,aligny center");
 		
 	}
 	
@@ -247,5 +271,4 @@ public class Libreria extends JFrame {
 			}
 	    }
 	};
-	private JMenuBar menuBar;
 }
