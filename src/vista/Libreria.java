@@ -41,16 +41,16 @@ public class Libreria extends JFrame {
 	protected JLabel lblMensaje;
 	protected JRadioButton optNovedad;
 	protected JRadioButton optReedicion;
-	protected JCheckBox chkRustica;
-	protected JCheckBox chkCartone;
-	protected JCheckBox chkGrapado;
-	protected JCheckBox chkEspiral;
+	protected JRadioButton optRustica;
+	protected JRadioButton optCartone;
+	protected JRadioButton optGrapado;
+	protected JRadioButton optEspiral;
 	protected JList listLibros;
 	
 	protected DefaultListModel<String> dlmNombres = new DefaultListModel<>();
-	protected int fuenteTitulo = 12;
-	protected int fuenteComponente = 11;
-	protected int fuenteMensaje = 11;
+	protected int fuenteTitulo = 14;
+	protected int fuenteComponente = 12;
+	protected int fuenteMensaje = 13;
 
 	
 	public Libreria() {
@@ -209,21 +209,27 @@ public class Libreria extends JFrame {
 		panelCaracteristicas.add(panelFormato, "cell 1 0,grow");
 		panelFormato.setLayout(new MigLayout("", "[]", "[grow 10,shrink 1,fill][grow 10,shrink 1,fill][grow 10,shrink 1,fill]"));
 		
-		chkCartone = new JCheckBox("Carton\u00E9");
-		chkCartone.setFont(new Font("Tahoma", Font.PLAIN, fuenteComponente));
-		panelFormato.add(chkCartone, "cell 0 0");
+		optCartone = new JRadioButton("Carton\u00E9");
+		optCartone.setFont(new Font("Tahoma", Font.PLAIN, fuenteComponente));
+		panelFormato.add(optCartone, "cell 0 0");
 		
-		chkRustica = new JCheckBox("R\u00FAstica");
-		chkRustica.setFont(new Font("Tahoma", Font.PLAIN, fuenteComponente));
-		panelFormato.add(chkRustica, "cell 0 1");
+		optRustica = new JRadioButton("R\u00FAstica");
+		optRustica.setFont(new Font("Tahoma", Font.PLAIN, fuenteComponente));
+		panelFormato.add(optRustica, "cell 0 1");
 		
-		chkGrapado = new JCheckBox("Grapado");
-		chkGrapado.setFont(new Font("Tahoma", Font.PLAIN, fuenteComponente));
-		panelFormato.add(chkGrapado, "flowy,cell 0 2");
+		optGrapado = new JRadioButton("Grapado");
+		optGrapado.setFont(new Font("Tahoma", Font.PLAIN, fuenteComponente));
+		panelFormato.add(optGrapado, "flowy,cell 0 2");
 		
-		chkEspiral = new JCheckBox("Espiral");
-		chkEspiral.setFont(new Font("Tahoma", Font.PLAIN, fuenteComponente));
-		panelFormato.add(chkEspiral, "cell 0 2");
+		optEspiral = new JRadioButton("Espiral");
+		optEspiral.setFont(new Font("Tahoma", Font.PLAIN, fuenteComponente));
+		panelFormato.add(optEspiral, "cell 0 2");
+		
+		ButtonGroup groupchk = new ButtonGroup();
+		groupchk.add(optCartone);
+		groupchk.add(optRustica);
+		groupchk.add(optGrapado);
+		groupchk.add(optEspiral);
 		
 		JPanel panelEsado = new JPanel();
 		panelEsado.setBorder(new TitledBorder(null, "Estado", TitledBorder.LEFT, TitledBorder.TOP, null, null));
@@ -238,6 +244,10 @@ public class Libreria extends JFrame {
 		optReedicion = new JRadioButton("Reedici\u00F3n");
 		optReedicion.setFont(new Font("Tahoma", Font.PLAIN, fuenteComponente));
 		panelEsado.add(optReedicion, "cell 0 1");
+		
+		ButtonGroup group = new ButtonGroup();
+		group.add(optReedicion);
+		group.add(optNovedad);
 		
 		JPanel panelLibros = new JPanel();
 		splitPane.setRightComponent(panelLibros);
@@ -257,7 +267,7 @@ public class Libreria extends JFrame {
 		listLibros.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		
 		lblMensaje = new JLabel("\u00A1Bienvenido!");
-		lblMensaje.setFont(new Font("Tahoma", Font.PLAIN, fuenteComponente));
+		lblMensaje.setFont(new Font("Tahoma", Font.BOLD, fuenteComponente));
 		contentPane.add(lblMensaje, "flowx,cell 0 4,growx,aligny center");
 		
 	}
