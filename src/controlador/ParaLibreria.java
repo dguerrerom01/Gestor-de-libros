@@ -57,10 +57,7 @@ public class ParaLibreria extends Libreria {
 				if (comprobarLibro()) {
 					if (estanteria.buscarLibro(txtIsbn.getText()) == null) {
 						if (estanteria.insertarLibro(recogerDatosPantalla())) {
-							dlmNombres.addElement("<html><b>Titulo:</b> " + txtTitulo.getText() + " - <b>ISBN:</b> "
-									+ txtIsbn.getText() + " - <b>Ejemplares:</b> " + txtEjemplares.getText()
-									+ "</html>");
-							listLibros.setModel(dlmNombres);
+							cargaDlmNombres();
 							limpiarPantalla();
 							escribirMensaje(Mensajes.LIBROAGREGADO);
 						} else
@@ -105,8 +102,7 @@ public class ParaLibreria extends Libreria {
 							"Dar de baja", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
 					if (seleccion == JOptionPane.YES_OPTION) {
 						estanteria.borrarLibro(estanteria.getLibros().get(listLibros.getSelectedIndex()));
-						dlmNombres.remove(borrarDisponible);
-						listLibros.repaint();
+						cargaDlmNombres();
 						limpiarPantalla();
 						deshabilitarText(true, txtIsbn, txtTitulo, txtAutor, txtEditorial, txtNumPaginas);
 						deshabilitarCombo(true, comboTemas);
@@ -167,10 +163,7 @@ public class ParaLibreria extends Libreria {
 			public void actionPerformed(ActionEvent e) {
 				if (comprobarLibro()) {
 					estanteria.editarLibro(recogerDatosPantalla());
-					dlmNombres.set(listLibros.getSelectedIndex(),
-							("<html><b>Titulo:</b> " + txtTitulo.getText() + " - <b>ISBN:</b> " + txtIsbn.getText()
-									+ " - <b>Ejemplares:</b> " + txtEjemplares.getText() + "</html>"));
-					listLibros.repaint();
+					cargaDlmNombres();
 					deshabilitarText(false, txtTitulo, txtAutor, txtEditorial, txtNumPaginas);
 					deshabilitarCombo(false, comboTemas);
 					deshabilitarOption(false, optCartone, optRustica, optGrapado, optEspiral, optNovedad, optReedicion);
@@ -443,14 +436,13 @@ public class ParaLibreria extends Libreria {
 		txtNumPaginas.setText(null);
 		txtEjemplares.setText(null);
 		comboTemas.setSelectedIndex(0);
-		optCartone.setSelected(false);
+		optCartone.setSelected(true);
 		optRustica.setSelected(false);
 		optGrapado.setSelected(false);
 		optEspiral.setSelected(false);
-		optNovedad.setSelected(false);
+		optNovedad.setSelected(true);
 		optReedicion.setSelected(false);
 		escribirMensaje(Mensajes.MENSAJEVACIO);
-		lblMensaje.setText(" ");
 	}
 	
 	/**

@@ -1,14 +1,12 @@
 package controlador;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
+import java.util.*;
+
+import modelo.Libro;
 
 public class AlmacenUnico {
-
+	
 	private String path;
 	private File file;
 	private FileOutputStream flujoW;
@@ -20,7 +18,7 @@ public class AlmacenUnico {
 	public AlmacenUnico(String path) {
 		super();
 		this.path = path;
-		file=new File(path);
+		file = new File(path);
 		
 		if(!file.exists()){
 			try {
@@ -31,44 +29,50 @@ public class AlmacenUnico {
 		}
 	}
 	
-	public boolean almacena(Object obj){
-			try {
-				flujoW=new FileOutputStream(file);
-				adaptadorW=new ObjectOutputStream(flujoW);
-				adaptadorW.writeObject(obj);
-			} catch (IOException e) {
-				estado=false;
-				e.printStackTrace();
-			}
-			try {
+	
+	public boolean almacena(Object obj) {
+		ArrayList<Libro> libros = (ArrayList<Libro>) obj;
+		try {
+			file.delete();
+			file.createNewFile();
+		}catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
+			for (Libro libro : libros) {
+				flujoW = new FileOutputStream(file, true);
+				if (file.length() > 0) {
+					adaptadorW = new MyObjectOutputStream(new FileOutputStream(file, true));
+				} else adaptadorW = new ObjectOutputStream(new FileOutputStream(file));
+				adaptadorW.writeObject(libro);
 				adaptadorW.close();
-				flujoW.close();
-			} catch (IOException e) {
-				estado=false;
-				e.printStackTrace();
 			}
+		} catch (IOException e) {
+			estado = false;
+//			e.printStackTrace();
+		}
 		return estado;
 	}
 	
-	public Object recuperar(){
-		Object obj=null;
-			try {
-				flujoR=new FileInputStream(file);
-				adaptadorR=new ObjectInputStream(flujoR);
-				obj=adaptadorR.readObject();
-			} catch (IOException | ClassNotFoundException e) {	
-				estado=false;
-				e.printStackTrace();
+	
+	public ArrayList<Libro> recuperar(){
+		ArrayList<Libro> lista = new ArrayList<>();
+		boolean finArchivo = false;
+		try {
+			adaptadorR = new ObjectInputStream(new FileInputStream(file));
+			while (!finArchivo) {
+				try {
+					lista.add((Libro) adaptadorR.readObject());
+				} catch (EOFException e) {
+					finArchivo = true;
+				}
 			}
-			try {
-				adaptadorR.close();
-				flujoR.close();
-			} catch (IOException e) {
-				estado=false;
-				e.printStackTrace();
-			}
-		
-		return obj;
+			adaptadorR.close();
+		} catch (IOException | ClassNotFoundException e) {
+			estado=false;
+//			e.printStackTrace();
+		}
+		return lista;
 	}
 
 	public boolean isEstado() {

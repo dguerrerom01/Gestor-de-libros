@@ -233,6 +233,7 @@ public class Libreria extends JFrame {
 				new MigLayout("", "[]", "[grow 10,shrink 1,fill][grow 10,shrink 1,fill][grow 10,shrink 1,fill]"));
 
 		optCartone = new JRadioButton("Carton\u00E9");
+		optCartone.setSelected(true);
 		optCartone.setFont(new Font("Tahoma", Font.PLAIN, fuenteComponente));
 		panelFormato.add(optCartone, "cell 0 0");
 
@@ -261,6 +262,7 @@ public class Libreria extends JFrame {
 		panelEsado.setLayout(new MigLayout("", "[]", "[grow,fill][grow,fill]"));
 
 		optNovedad = new JRadioButton("Novedad");
+		optNovedad.setSelected(true);
 		optNovedad.setFont(new Font("Tahoma", Font.PLAIN, fuenteComponente));
 		panelEsado.add(optNovedad, "cell 0 0");
 
