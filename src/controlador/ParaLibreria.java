@@ -85,6 +85,7 @@ public class ParaLibreria extends Libreria {
 					escribirMensaje(Mensajes.CANTIDADACTUALIZADA);
 				} else
 					escribirMensaje(Mensajes.FUERADELIMITES);
+				cargaDlmNombres();
 			}
 		});
 		
@@ -117,6 +118,7 @@ public class ParaLibreria extends Libreria {
 					}
 				} else
 					escribirMensaje(Mensajes.ERRORINDICE);
+				cargaDlmNombres();
 			}
 		});
 		
@@ -231,6 +233,7 @@ public class ParaLibreria extends Libreria {
 						esconderButton(false, btnGuardar);
 					} else {
 						escribirMensaje(Mensajes.MENSAJEVACIO);
+						txtEjemplares.setText("1");
 						deshabilitarText(true, txtTitulo, txtAutor, txtEditorial, txtNumPaginas);
 						deshabilitarCombo(true, comboTemas);
 						deshabilitarOption(true, optCartone, optRustica, optGrapado, optEspiral, optNovedad,
