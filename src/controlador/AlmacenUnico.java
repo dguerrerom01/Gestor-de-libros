@@ -33,8 +33,10 @@ public class AlmacenUnico {
 	public boolean almacena(Object obj) {
 		ArrayList<Libro> libros = (ArrayList<Libro>) obj;
 		try {
+			flujoW = new FileOutputStream(file);
 			file.delete();
 			file.createNewFile();
+			flujoW.close();
 		}catch (IOException e) {
 			e.printStackTrace();
 		}
