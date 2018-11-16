@@ -9,11 +9,13 @@ public class Libro implements Serializable {
 	private String autor;
 	private String tema;
 	private String editorial;
-	private int posicionTema;
+//	private int posicionTema;
 	private int numPaginas;
 	private int ejemplares;
-	private Boolean[] formato = new Boolean[4];
-	private Boolean[] estado = new Boolean[2];
+//	private Boolean[] formato = new Boolean[4];
+//	private Boolean[] estado = new Boolean[2];
+	private String formato;
+	private String estado;
 
 	// GETTERS AND SETTERS
 	
@@ -73,28 +75,44 @@ public class Libro implements Serializable {
 		this.ejemplares = ejemplares;
 	}
 
-	public Boolean getFormato(int posicion) {
-		return formato[posicion];
+//	public Boolean getFormato(int posicion) {
+//		return formato[posicion];
+//	}
+//
+//	public void setFormato(int posicion, Boolean formato) {
+//		this.formato[posicion] = formato;
+//	}
+//
+//	public Boolean getEstado(int posicion) {
+//		return estado[posicion];
+//	}
+//
+//	public void setEstado(int posicion, Boolean estado) {
+//		this.estado[posicion] = estado;
+//	}
+//
+//	public int getPosicionTema() {
+//		return posicionTema;
+//	}
+//
+//	public void setPosicionTema(int locTema) {
+//		this.posicionTema = locTema;
+//	}
+	
+	public String getFormato() {
+		return formato;
 	}
 
-	public void setFormato(int posicion, Boolean formato) {
-		this.formato[posicion] = formato;
+	public void setFormato(String formato) {
+		this.formato = formato;
 	}
 
-	public Boolean getEstado(int posicion) {
-		return estado[posicion];
+	public String getEstado() {
+		return estado;
 	}
 
-	public void setEstado(int posicion, Boolean estado) {
-		this.estado[posicion] = estado;
-	}
-
-	public int getPosicionTema() {
-		return posicionTema;
-	}
-
-	public void setPosicionTema(int locTema) {
-		this.posicionTema = locTema;
+	public void setEstado(String estado) {
+		this.estado = estado;
 	}
 	
 }

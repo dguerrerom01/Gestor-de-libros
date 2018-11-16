@@ -1,6 +1,10 @@
 package controlador;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Iterator;
+
 import javax.swing.*;
 
 import modelo.Libro;
@@ -418,13 +422,18 @@ public class ParaLibreria extends Libreria {
 			libro.setEjemplares(1);
 		String temaSeleccionado = comboTemas.getSelectedItem().toString();
 		libro.setTema(temaSeleccionado);
-		libro.setPosicionTema(comboTemas.getSelectedIndex());
-		libro.setFormato(0, optCartone.isSelected() ? true : false);
-		libro.setFormato(1, optRustica.isSelected() ? true : false);
-		libro.setFormato(2, optGrapado.isSelected() ? true : false);
-		libro.setFormato(3, optEspiral.isSelected() ? true : false);
-		libro.setEstado(0, optNovedad.isSelected() ? true : false);
-		libro.setEstado(1, optReedicion.isSelected() ? true : false);
+		for (Enumeration<AbstractButton> buttons = groupFormato.getElements(); buttons.hasMoreElements();) {
+            AbstractButton button = buttons.nextElement();
+            if (button.isSelected()) {
+            	libro.setFormato(button.getText());
+			}
+        }
+		for (Enumeration<AbstractButton> buttons = groupEstado.getElements(); buttons.hasMoreElements();) {
+            AbstractButton button = buttons.nextElement();
+            if (button.isSelected()) {
+            	libro.setEstado(button.getText());
+			}
+        }
 		return libro;
 	}
 
@@ -459,13 +468,23 @@ public class ParaLibreria extends Libreria {
 		txtEditorial.setText(libro.getEditorial());
 		txtNumPaginas.setText(String.valueOf(libro.getNumPaginas()));
 		txtEjemplares.setText(String.valueOf(libro.getEjemplares()));
-		comboTemas.setSelectedIndex(libro.getPosicionTema());
-		optCartone.setSelected(libro.getFormato(0));
-		optRustica.setSelected(libro.getFormato(1));
-		optGrapado.setSelected(libro.getFormato(2));
-		optEspiral.setSelected(libro.getFormato(2));
-		optNovedad.setSelected(libro.getEstado(0));
-		optReedicion.setSelected(libro.getEstado(1));
+		for (int i = 0; i < comboTemas.getItemCount(); i++) {
+			if (comboTemas.getItemAt(i).equals(libro.getTema())) {
+				comboTemas.setSelectedIndex(i);
+			}
+		}
+		for (Enumeration<AbstractButton> buttons = groupFormato.getElements(); buttons.hasMoreElements();) {
+            AbstractButton button = buttons.nextElement();
+            if (button.getText().equals(libro.getFormato())) {
+            	button.setSelected(true);
+			}
+        }
+		for (Enumeration<AbstractButton> buttons = groupEstado.getElements(); buttons.hasMoreElements();) {
+            AbstractButton button = buttons.nextElement();
+            if (button.getText().equals(libro.getEstado())) {
+            	button.setSelected(true);
+			}
+        }
 	}
 	
 	/**

@@ -49,6 +49,8 @@ public class Libreria extends JFrame {
 	protected JRadioButton optGrapado;
 	protected JRadioButton optEspiral;
 	protected JList listLibros;
+	protected ButtonGroup groupEstado;
+	protected ButtonGroup groupFormato;
 
 	protected DefaultListModel<String> dlmNombres = new DefaultListModel<>();
 	protected int fuenteTitulo = 16;
@@ -249,11 +251,11 @@ public class Libreria extends JFrame {
 		optEspiral.setFont(new Font("Tahoma", Font.PLAIN, fuenteComponente));
 		panelFormato.add(optEspiral, "cell 0 2");
 
-		ButtonGroup groupchk = new ButtonGroup();
-		groupchk.add(optCartone);
-		groupchk.add(optRustica);
-		groupchk.add(optGrapado);
-		groupchk.add(optEspiral);
+		groupFormato = new ButtonGroup();
+		groupFormato.add(optCartone);
+		groupFormato.add(optRustica);
+		groupFormato.add(optGrapado);
+		groupFormato.add(optEspiral);
 
 		JPanel panelEsado = new JPanel();
 		panelEsado.setBorder(new TitledBorder(null, "Estado", TitledBorder.LEFT, TitledBorder.TOP, null, null));
@@ -270,9 +272,9 @@ public class Libreria extends JFrame {
 		optReedicion.setFont(new Font("Tahoma", Font.PLAIN, fuenteComponente));
 		panelEsado.add(optReedicion, "cell 0 1");
 
-		ButtonGroup group = new ButtonGroup();
-		group.add(optReedicion);
-		group.add(optNovedad);
+		groupEstado = new ButtonGroup();
+		groupEstado.add(optReedicion);
+		groupEstado.add(optNovedad);
 
 		JPanel panelLibros = new JPanel();
 		splitPane.setRightComponent(panelLibros);

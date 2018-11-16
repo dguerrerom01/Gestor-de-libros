@@ -1,34 +1,31 @@
 package controlador;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 import modelo.Libro;
 
 public class Estanteria {
+	
+	AccesoBD accesoBD = new AccesoBD();
 
 	private ArrayList<Libro> libros;
-	private AlmacenUnico almacen;
 	
 	public ArrayList<Libro> getLibros() {
+		cargarBD();
 		return libros;
 	}
 	
 	public Estanteria() {
-		this.almacen = new AlmacenUnico("libros.dat");
-		iniciarFichero(); 
-	}
-	
-	private void iniciarFichero() {
-		try{
-			leerEstanteria();
-		}catch (Exception e) {
-			this.libros = new ArrayList<>();
-			almacen.almacena(this.libros);
-		}
+		cargarBD();
 	}
 
-	private void leerEstanteria() {
-		this.libros = (ArrayList<Libro>) almacen.recuperar();
+	private void cargarBD() {
+		try {
+			this.libros = accesoBD.recuperar("SELECT * FROM libro ORDER BY ISBN");
+		} catch (Exception e) {
+			this.libros = new ArrayList<>();
+		}
 	}
 	
 	/**
@@ -37,12 +34,16 @@ public class Estanteria {
 	 * @return TRUE si se ha agregado, FALSE si no lo ha hecho
 	 */
 	public boolean insertarLibro(Libro libro) {
-		leerEstanteria();
-		if (libros.add(libro)) {
-			almacen.almacena(libros);
-			return true;
+		try {
+			return accesoBD.almacena(
+					"INSERT INTO `libro`(`ISBN`,`Titulo`,`Autor`,`Editorial`,`Paginas`,`Ejemplares`,`Tema`,`Formato`,`Estado`) "
+							+ "VALUES('" + libro.getIsbn() + "','" + libro.getTitulo() + "','" + libro.getAutor()
+							+ "','" + libro.getEditorial() + "','" + libro.getNumPaginas() + "','"
+							+ libro.getEjemplares() + "','"+libro.getTema()+"','"+libro.getFormato()+"','"+libro.getEstado()+"')");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
 		}
-		return false;
 	}
 
 	/**
@@ -51,11 +52,14 @@ public class Estanteria {
 	 * @return TRUE si se ha eliminado, FALSE si no lo ha hecho
 	 */
 	public boolean borrarLibro(Libro libro) {
-		if (libros.remove(libro)) {
-			almacen.almacena(this.libros);
-			return true;
+		try {
+			return accesoBD.almacena(
+					"DELETE FROM libro WHERE ISBN='"+libro.getIsbn()+"'");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
 		}
-		return false;
+
 	}
 	
 	/**
@@ -63,14 +67,16 @@ public class Estanteria {
 	 * @param libroNuevo
 	 */
 	public boolean editarLibro(Libro libro) {
-		for (int i = 0; i < libros.size(); i++) {
-			if (libros.get(i).getIsbn().equals(libro.getIsbn())) {
-				libros.set(i, libro);
-				almacen.almacena(this.libros);
-				return true;
-			}
+		try {
+			return accesoBD.almacena(
+					"UPDATE libro SET Titulo='" + libro.getTitulo() + "', Autor='" + libro.getAutor() + "', Editorial='"
+							+ libro.getEditorial() + "', Paginas='" + libro.getNumPaginas() + "',Ejemplares='"
+							+ libro.getEjemplares() + "', Tema='" + libro.getTema()
+							+ "',Formato='"+libro.getFormato()+"',Estado='"+libro.getEstado()+"' WHERE ISBN='" + libro.getIsbn() + "'");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
 		}
-		return false;
 	}
 
 	/**
@@ -79,12 +85,16 @@ public class Estanteria {
 	 * @return LIBRO encontrado, NULL si no existe
 	 */
 	public Libro buscarLibro(String isbn) {
-		for (Libro libro : libros) {
-			if (libro.getIsbn().equals(isbn)) {
-				return libro;
-			}
+		try {
+			ArrayList libro = accesoBD.recuperar("SELECT * FROM libro WHERE ISBN='"+isbn+"'");
+			if (!libro.isEmpty()) {
+				return (Libro) libro.get(0);
+			} else return null;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
 		}
-		return null;
+
 	}
 	
 }
