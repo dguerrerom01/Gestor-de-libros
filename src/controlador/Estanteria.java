@@ -1,6 +1,7 @@
 package controlador;
 
 import java.lang.reflect.Array;
+import java.sql.SQLException;
 import java.util.*;
 
 import modelo.Libro;
@@ -22,7 +23,7 @@ public class Estanteria {
 
 	private void cargarBD() {
 		try {
-			this.libros = accesoBD.recuperar("SELECT * FROM libro ORDER BY ISBN");
+			this.libros = accesoBD.obtenerLibros("SELECT * FROM libro ORDER BY ISBN");
 		} catch (Exception e) {
 			this.libros = new ArrayList<>();
 		}
@@ -85,15 +86,18 @@ public class Estanteria {
 	 * @return LIBRO encontrado, NULL si no existe
 	 */
 	public Libro buscarLibro(String isbn) {
+		assert (isbn != null && !isbn.isEmpty());
+		Libro libro = null;
+		HashMap<String, Object> datosLibro = null;
 		try {
-			ArrayList libro = accesoBD.recuperar("SELECT * FROM libro WHERE ISBN='"+isbn+"'");
-			if (!libro.isEmpty()) {
-				return (Libro) libro.get(0);
-			} else return null;
-		} catch (Exception e) {
+			datosLibro = new AccesoBD().recuperar("SELECT * FROM libro WHERE ISBN='"+isbn+"'");
+		} catch (IllegalArgumentException | IllegalAccessException | SecurityException | SQLException e) {
 			e.printStackTrace();
-			return null;
 		}
+		if (datosLibro != null) {
+			libro = new Libro(datosLibro);
+		}
+		return libro;
 
 	}
 	

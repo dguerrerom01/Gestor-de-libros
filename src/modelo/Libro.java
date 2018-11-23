@@ -1,6 +1,8 @@
 package modelo;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.util.HashMap;
 
 public class Libro implements Serializable {
 
@@ -9,19 +11,35 @@ public class Libro implements Serializable {
 	private String autor;
 	private String tema;
 	private String editorial;
-//	private int posicionTema;
-	private int numPaginas;
+	private int paginas;
 	private int ejemplares;
-//	private Boolean[] formato = new Boolean[4];
-//	private Boolean[] estado = new Boolean[2];
 	private String formato;
 	private String estado;
+	
+	// CONSTRUCTOR
+	
+	public Libro() {
+			
+	}
+	
+	public Libro(HashMap<String, Object> parametros) {
+		Field[] atributos = this.getClass().getDeclaredFields();
+		for (int i = 0; i < atributos.length; i++) {
+			if (parametros.get(atributos[i].getName()) != null) {
+				try {
+					atributos[i].set(this, parametros.get(atributos[i].getName()));
+				} catch (IllegalArgumentException | IllegalAccessException e) {
+				}
+			}
+		}
+	}
 
 	// GETTERS AND SETTERS
 	
 	public String getIsbn() {
 		return isbn;
 	}
+
 
 	public void setIsbn(String isbn) {
 		this.isbn = isbn;
@@ -60,11 +78,11 @@ public class Libro implements Serializable {
 	}
 
 	public int getNumPaginas() {
-		return numPaginas;
+		return paginas;
 	}
 
 	public void setNumPaginas(int numPaginas) {
-		this.numPaginas = numPaginas;
+		this.paginas = numPaginas;
 	}
 
 	public int getEjemplares() {
@@ -74,30 +92,6 @@ public class Libro implements Serializable {
 	public void setEjemplares(int ejemplares) {
 		this.ejemplares = ejemplares;
 	}
-
-//	public Boolean getFormato(int posicion) {
-//		return formato[posicion];
-//	}
-//
-//	public void setFormato(int posicion, Boolean formato) {
-//		this.formato[posicion] = formato;
-//	}
-//
-//	public Boolean getEstado(int posicion) {
-//		return estado[posicion];
-//	}
-//
-//	public void setEstado(int posicion, Boolean estado) {
-//		this.estado[posicion] = estado;
-//	}
-//
-//	public int getPosicionTema() {
-//		return posicionTema;
-//	}
-//
-//	public void setPosicionTema(int locTema) {
-//		this.posicionTema = locTema;
-//	}
 	
 	public String getFormato() {
 		return formato;
