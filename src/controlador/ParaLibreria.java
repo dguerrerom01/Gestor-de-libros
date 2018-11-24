@@ -191,16 +191,11 @@ public class ParaLibreria extends Libreria {
 		listLibros.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
-				System.out.println("........................");
-				System.out.println(listLibros.getSelectedValue());
-				System.out.println(listLibros.getSelectedValue().toString().indexOf("ISBN"));
-				System.out.println(listLibros.getSelectedValue().toString().substring(listLibros.getSelectedValue().toString().indexOf("ISBN") + 10,listLibros.getSelectedValue().toString().indexOf("ISBN") + 23));
 				if (listLibros.getSelectedIndex() != -1) {
 					escribirMensaje(Mensajes.AVISOLIBROSELECCIONADO);
 					enviarDatosAPantalla(estanteria.buscarLibro(listLibros.getSelectedValue().toString().substring(
 							listLibros.getSelectedValue().toString().indexOf("ISBN") + 10,
 							listLibros.getSelectedValue().toString().indexOf("ISBN") + 23)));
-//					enviarDatosAPantalla(estanteria.getLibros().get(listLibros.getSelectedIndex()));
 					deshabilitarText(false, txtIsbn, txtTitulo, txtAutor, txtEditorial, txtNumPaginas);
 					deshabilitarCombo(false, comboTemas);
 					deshabilitarOption(false, optCartone, optRustica, optGrapado, optEspiral, optNovedad, optReedicion);

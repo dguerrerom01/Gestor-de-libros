@@ -49,18 +49,18 @@ public class AccesoBD {
 		abrirConnection();
 		CachedRowSet cachedRowSet = null;
 		cachedRowSet = new CachedRowSetImpl();
-		cachedRowSet.populate(AccesoBD.connection.prepareStatement(sql).executeQuery());
+		cachedRowSet.populate(connection.prepareStatement(sql).executeQuery());
 		cachedRowSet.next();
 		return crearLibro(cachedRowSet);
 	}
 	
-	private HashMap<String, Object> crearLibro(ResultSet resultSet)
+	private HashMap<String, Object> crearLibro(CachedRowSet cachedRowSet)
 			throws SQLException, IllegalArgumentException, IllegalAccessException, SecurityException {
 		abrirConnection();
 		HashMap<String, Object> datosLibro = new HashMap<>();
 		try {
-			for (int i = 1; i < resultSet.getMetaData().getColumnCount() + 1; i++) {
-				datosLibro.put(resultSet.getMetaData().getColumnName(i).toString(), resultSet.getObject(i));
+			for (int i = 1; i < cachedRowSet.getMetaData().getColumnCount() + 1; i++) {
+				datosLibro.put(cachedRowSet.getMetaData().getColumnName(i).toString(), cachedRowSet.getObject(i));
 			}
 		} catch (ArrayIndexOutOfBoundsException e) {
 			return null;
