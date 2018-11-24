@@ -1,7 +1,5 @@
 package controlador;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.sql.*;
 import java.util.*;
 
@@ -82,7 +80,7 @@ public class AccesoBD {
 				libro.setTitulo(cachedRowSet.getString("titulo"));
 				libro.setAutor(cachedRowSet.getString("autor"));
 				libro.setEditorial(cachedRowSet.getString("editorial"));
-				libro.setNumPaginas(Integer.valueOf(cachedRowSet.getString("numPaginas")));
+				libro.setPaginas(Integer.valueOf(cachedRowSet.getString("paginas")));
 				libro.setEjemplares(Integer.valueOf(cachedRowSet.getString("ejemplares")));
 				libro.setTema(cachedRowSet.getString("tema"));
 				libro.setFormato(cachedRowSet.getString("formato"));

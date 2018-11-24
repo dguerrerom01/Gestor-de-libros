@@ -21,7 +21,7 @@
   </class>  
   <class id="3" language="java" name="vista.Libreria" project="Gestor de libros" 
     file="/Gestor de libros/src/vista/Libreria.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="196" y="211"/>    
+    <position height="-1" width="-1" x="213" y="61"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="false" private="true" static="true"/>      
@@ -37,51 +37,64 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="5" language="java" name="controlador.AlmacenUnico" project="Gestor de libros" 
-    file="/Gestor de libros/src/controlador/AlmacenUnico.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="940" y="110"/>    
+  <class id="5" language="java" name="controlador.AccesoBD" project="Gestor de libros" 
+    file="/Gestor de libros/src/controlador/AccesoBD.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="229" y="362"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <association id="6">    
+  <class id="6" language="java" name="controlador.AccesoBD.CerrarConexion" project="Gestor de libros" 
+    file="/Gestor de libros/src/controlador/AccesoBD.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="517" y="522"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <association id="7">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="7" name="libros">        
+      <attribute id="8" name="libros">        
         <position height="0" width="0" x="355" y="-17"/>      
       </attribute>      
-      <multiplicity id="8" minimum="0" maximum="2147483647">        
+      <multiplicity id="9" minimum="0" maximum="2147483647">        
         <position height="0" width="0" x="355" y="-17"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="9">    
+  <generalization id="10">    
     <end type="SOURCE" refId="2"/>    
     <end type="TARGET" refId="3"/>  
   </generalization>  
-  <association id="10">    
+  <association id="11">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="11" name="almacen"/>      
-      <multiplicity id="12" minimum="0" maximum="1"/>    
+      <attribute id="12" name="accesoBD"/>      
+      <multiplicity id="13" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="13">    
+  <association id="14">    
     <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="14" name="estanteria">        
+      <attribute id="15" name="estanteria">        
         <position height="0" width="0" x="377" y="11"/>      
       </attribute>      
-      <multiplicity id="15" minimum="0" maximum="1">        
+      <multiplicity id="16" minimum="0" maximum="1">        
         <position height="0" width="0" x="377" y="11"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
+  <nesting id="17">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="6"/>  
+  </nesting>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true" static="true"/>    

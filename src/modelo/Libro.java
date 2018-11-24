@@ -77,12 +77,12 @@ public class Libro implements Serializable {
 		this.editorial = editorial;
 	}
 
-	public int getNumPaginas() {
+	public int getPaginas() {
 		return paginas;
 	}
 
-	public void setNumPaginas(int numPaginas) {
-		this.paginas = numPaginas;
+	public void setPaginas(int paginas) {
+		this.paginas = paginas;
 	}
 
 	public int getEjemplares() {

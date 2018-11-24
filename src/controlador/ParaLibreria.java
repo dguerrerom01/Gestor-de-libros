@@ -412,9 +412,9 @@ public class ParaLibreria extends Libreria {
 		libro.setAutor(txtAutor.getText());
 		libro.setEditorial(txtEditorial.getText());
 		try {
-			libro.setNumPaginas(Integer.valueOf((txtNumPaginas.getText())));
+			libro.setPaginas(Integer.valueOf((txtNumPaginas.getText())));
 		} catch (NumberFormatException e) {
-			libro.setNumPaginas(0);
+			libro.setPaginas(0);
 		}
 		if (!txtEjemplares.getText().isEmpty()) {
 			libro.setEjemplares(Integer.valueOf(txtEjemplares.getText()));
@@ -466,7 +466,7 @@ public class ParaLibreria extends Libreria {
 		txtTitulo.setText(libro.getTitulo());
 		txtAutor.setText(libro.getAutor());
 		txtEditorial.setText(libro.getEditorial());
-		txtNumPaginas.setText(String.valueOf(libro.getNumPaginas()));
+		txtNumPaginas.setText(String.valueOf(libro.getPaginas()));
 		txtEjemplares.setText(String.valueOf(libro.getEjemplares()));
 		for (int i = 0; i < comboTemas.getItemCount(); i++) {
 			if (comboTemas.getItemAt(i).equals(libro.getTema())) {

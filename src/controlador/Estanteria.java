@@ -1,6 +1,5 @@
 package controlador;
 
-import java.lang.reflect.Array;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -37,9 +36,9 @@ public class Estanteria {
 	public boolean insertarLibro(Libro libro) {
 		try {
 			return accesoBD.almacena(
-					"INSERT INTO `libro`(`ISBN`,`Titulo`,`Autor`,`Editorial`,`Paginas`,`Ejemplares`,`Tema`,`Formato`,`Estado`) "
+					"INSERT INTO `libro`(`isbn`,`titulo`,`autor`,`editorial`,`paginas`,`ejemplares`,`tema`,`formato`,`estado`) "
 							+ "VALUES('" + libro.getIsbn() + "','" + libro.getTitulo() + "','" + libro.getAutor()
-							+ "','" + libro.getEditorial() + "','" + libro.getNumPaginas() + "','"
+							+ "','" + libro.getEditorial() + "','" + libro.getPaginas() + "','"
 							+ libro.getEjemplares() + "','"+libro.getTema()+"','"+libro.getFormato()+"','"+libro.getEstado()+"')");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -71,7 +70,7 @@ public class Estanteria {
 		try {
 			return accesoBD.almacena(
 					"UPDATE libro SET Titulo='" + libro.getTitulo() + "', Autor='" + libro.getAutor() + "', Editorial='"
-							+ libro.getEditorial() + "', Paginas='" + libro.getNumPaginas() + "',Ejemplares='"
+							+ libro.getEditorial() + "', Paginas='" + libro.getPaginas() + "',Ejemplares='"
 							+ libro.getEjemplares() + "', Tema='" + libro.getTema()
 							+ "',Formato='"+libro.getFormato()+"',Estado='"+libro.getEstado()+"' WHERE ISBN='" + libro.getIsbn() + "'");
 		} catch (Exception e) {
@@ -98,7 +97,6 @@ public class Estanteria {
 			libro = new Libro(datosLibro);
 		}
 		return libro;
-
 	}
 	
 }
