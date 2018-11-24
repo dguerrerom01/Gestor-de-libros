@@ -141,6 +141,7 @@ public class ParaLibreria extends Libreria {
 					escribirMensaje(Mensajes.CANTIDADACTUALIZADA);
 				} else
 					escribirMensaje(Mensajes.FUERADELIMITES);
+				cargaDlmNombres();
 			}
 		});
 		
