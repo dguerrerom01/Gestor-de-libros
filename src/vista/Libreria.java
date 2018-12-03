@@ -225,6 +225,9 @@ public class Libreria extends JFrame {
 		txtEditorial.setFont(new Font("Tahoma", Font.PLAIN, fuenteComponente));
 		panelDatos.add(txtEditorial, "cell 0 4,growx,aligny center");
 		txtEditorial.setColumns(10);
+		
+		btnGestionar = new JButton("Gestionar");
+		panelDatos.add(btnGestionar, "cell 0 2");
 
 		JPanel panelFormato = new JPanel();
 		panelFormato.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -309,4 +312,5 @@ public class Libreria extends JFrame {
 			}
 		}
 	};
+	private JButton btnGestionar;
 }

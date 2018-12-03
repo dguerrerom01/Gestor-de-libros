@@ -19,7 +19,6 @@ public class Libro implements Serializable {
 	// CONSTRUCTOR
 	
 	public Libro() {
-			
 	}
 	
 	public Libro(HashMap<String, Object> parametros) {

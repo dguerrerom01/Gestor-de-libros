@@ -5,7 +5,7 @@ import java.util.*;
 
 import modelo.Libro;
 
-public class Estanteria {
+public class AccionesLibro {
 	
 	AccesoBD accesoBD = new AccesoBD();
 
@@ -16,13 +16,19 @@ public class Estanteria {
 		return libros;
 	}
 	
-	public Estanteria() {
+	public AccionesLibro() {
 		cargarBD();
 	}
 
 	private void cargarBD() {
 		try {
-			this.libros = accesoBD.obtenerLibros("SELECT * FROM libro ORDER BY ISBN");
+			ArrayList<HashMap<String, Object>> datosLibro = null;
+			datosLibro = accesoBD.recuperar("SELECT * FROM libro ORDER BY ISBN");
+			libros.clear();
+			for (HashMap<String, Object> hashMap : datosLibro) {
+				System.out.println(hashMap);
+				libros.add(new Libro(hashMap));
+			}
 		} catch (Exception e) {
 			this.libros = new ArrayList<>();
 		}
@@ -87,14 +93,14 @@ public class Estanteria {
 	public Libro buscarLibro(String isbn) {
 		assert (isbn != null && !isbn.isEmpty());
 		Libro libro = null;
-		HashMap<String, Object> datosLibro = null;
+		ArrayList<HashMap<String, Object>> datosLibro = null;
 		try {
 			datosLibro = new AccesoBD().recuperar("SELECT * FROM libro WHERE ISBN='"+isbn+"'");
 		} catch (IllegalArgumentException | IllegalAccessException | SecurityException | SQLException e) {
 			e.printStackTrace();
 		}
-		if (datosLibro != null) {
-			libro = new Libro(datosLibro);
+		if (!datosLibro.isEmpty()) {
+			libro = new Libro(datosLibro.get(0));
 		}
 		return libro;
 	}
