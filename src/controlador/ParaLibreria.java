@@ -8,7 +8,9 @@ import java.util.Iterator;
 import javax.swing.*;
 
 import modelo.Libro;
+import modelo.Tema;
 import utiles.Mensajes;
+import vista.GestorTema;
 import vista.Libreria;
 
 public class ParaLibreria extends Libreria {
@@ -18,6 +20,7 @@ public class ParaLibreria extends Libreria {
 	public ParaLibreria() {
 		
 		cargaDlmNombres();
+		cargaDlmTemas();
 		
 		/**
 		 * Accion al seleccionar el boton Nuevo libro
@@ -60,8 +63,8 @@ public class ParaLibreria extends Libreria {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (comprobarLibro()) {
-					if (fachada.buscarLibro(txtIsbn.getText()) == null) {
-						if (fachada.insertarLibro(recogerDatosPantalla())) {
+					if (fachada.buscar(txtIsbn.getText()) == null) {
+						if (fachada.insertar(recogerDatosPantalla())) {
 							cargaDlmNombres();
 							limpiarPantalla(true);
 							escribirMensaje(Mensajes.LIBROAGREGADO);
@@ -86,7 +89,7 @@ public class ParaLibreria extends Libreria {
 				cantidad += Integer.valueOf(txtEjemplares.getText());
 				if (cantidad < 999999999) {
 					txtEjemplares.setText(String.valueOf(cantidad));
-					fachada.editarLibro(recogerDatosPantalla());
+					fachada.editar(recogerDatosPantalla());
 					escribirMensaje(Mensajes.CANTIDADACTUALIZADA);
 				} else
 					escribirMensaje(Mensajes.FUERADELIMITES);
@@ -107,7 +110,7 @@ public class ParaLibreria extends Libreria {
 									+ " ejemplares disponibles.",
 							"Dar de baja", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
 					if (seleccion == JOptionPane.YES_OPTION) {
-						fachada.borrarLibro(fachada.obtenerLibros().get(listLibros.getSelectedIndex()));
+						fachada.borrar(fachada.obtenerLibros().get(listLibros.getSelectedIndex()));
 						cargaDlmNombres();
 						limpiarPantalla(true);
 						deshabilitarText(true, txtIsbn, txtTitulo, txtAutor, txtEditorial, txtNumPaginas);
@@ -139,7 +142,7 @@ public class ParaLibreria extends Libreria {
 				cantidad = Integer.valueOf(txtEjemplares.getText()) - cantidad;
 				if (cantidad >= 0) {
 					txtEjemplares.setText(String.valueOf(cantidad));
-					fachada.editarLibro(recogerDatosPantalla());
+					fachada.editar(recogerDatosPantalla());
 					escribirMensaje(Mensajes.CANTIDADACTUALIZADA);
 				} else
 					escribirMensaje(Mensajes.FUERADELIMITES);
@@ -171,7 +174,7 @@ public class ParaLibreria extends Libreria {
 		btnGuardar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (comprobarLibro()) {
-					fachada.editarLibro(recogerDatosPantalla());
+					fachada.editar(recogerDatosPantalla());
 					cargaDlmNombres();
 					deshabilitarText(false, txtTitulo, txtAutor, txtEditorial, txtNumPaginas);
 					deshabilitarCombo(false, comboTemas);
@@ -185,6 +188,14 @@ public class ParaLibreria extends Libreria {
 			}
 		});
 		
+		btnGestionar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				GestorTema dialog = new ParaGestorTema(new Libreria(), true);
+				dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+				dialog.setVisible(true);
+				cargaDlmTemas();
+			}
+		});
 		
 		/**
 		 * Accion al seleccionar un libro de la lista
@@ -194,7 +205,7 @@ public class ParaLibreria extends Libreria {
 			public void mouseReleased(MouseEvent arg0) {
 				if (listLibros.getSelectedIndex() != -1) {
 					escribirMensaje(Mensajes.AVISOLIBROSELECCIONADO);
-					enviarDatosAPantalla(fachada.buscarLibro(listLibros.getSelectedValue().toString().substring(
+					enviarDatosAPantalla(fachada.buscar(listLibros.getSelectedValue().toString().substring(
 							listLibros.getSelectedValue().toString().indexOf("ISBN") + 10,
 							listLibros.getSelectedValue().toString().indexOf("ISBN") + 23)));
 					deshabilitarText(false, txtIsbn, txtTitulo, txtAutor, txtEditorial, txtNumPaginas);
@@ -218,8 +229,8 @@ public class ParaLibreria extends Libreria {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				if (txtIsbn.getText().length() == 13) {
-					if (fachada.buscarLibro(txtIsbn.getText()) != null) {
-						enviarDatosAPantalla(fachada.buscarLibro(txtIsbn.getText()));
+					if (fachada.buscar(txtIsbn.getText()) != null) {
+						enviarDatosAPantalla(fachada.buscar(txtIsbn.getText()));
 						for (int i = 0; i < dlmNombres.size(); i++) {
 							if (dlmNombres.getElementAt(i)
 									.equals("<html><b>Titulo:</b> " + txtTitulo.getText() + " - <b>ISBN:</b> "
@@ -405,6 +416,13 @@ public class ParaLibreria extends Libreria {
 		for (Libro libros : fachada.obtenerLibros()) {
 			dlmNombres.addElement("<html><b>Titulo:</b> " + libros.getTitulo() + " - <b>ISBN:</b> " + libros.getIsbn()
 					+ " - <b>Ejemplares:</b> " + libros.getEjemplares() + "</html>");
+		}
+	}
+	
+	private void cargaDlmTemas() {
+		dlmTemas.removeAllElements();
+		for (Tema temas : fachada.obtenerTemas()) {
+			dlmTemas.addElement(temas.getTema());
 		}
 	}
 

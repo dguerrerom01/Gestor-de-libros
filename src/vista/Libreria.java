@@ -3,6 +3,8 @@ package vista;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
+
+import controlador.ParaGestorTema;
 import net.miginfocom.swing.MigLayout;
 import utiles.Mensajes;
 
@@ -32,6 +34,7 @@ public class Libreria extends JFrame {
 	protected JTextField txtEjemplares;
 	protected JComboBox comboTemas;
 	protected JButton btnGuardar;
+	protected JButton btnGestionar;
 	protected JLabel lblLibreria;
 	protected JLabel lblIsbn;
 	protected JLabel lblTitulo;
@@ -53,6 +56,7 @@ public class Libreria extends JFrame {
 	protected ButtonGroup groupFormato;
 
 	protected DefaultListModel<String> dlmNombres = new DefaultListModel<>();
+	protected DefaultComboBoxModel<String> dlmTemas = new DefaultComboBoxModel<>();
 	protected int fuenteTitulo = 16;
 	protected int fuenteComponente = 12;
 	protected int fuenteMensaje = 15;
@@ -189,11 +193,7 @@ public class Libreria extends JFrame {
 		panelDatos.add(txtTitulo, "cell 0 1,growx,aligny center");
 		txtTitulo.setColumns(10);
 
-		comboTemas = new JComboBox();
-		comboTemas.setModel(new DefaultComboBoxModel(
-				new String[] { "Acci\u00F3n", "Aventuras", "Biograf\u00EDa", "Ciencia", "Ciencia Ficci\u00F3n", "Cine",
-						"Econom\u00EDa", "Gastronom\u00EDa", "Historia", "Inform\u00E1tica", "Medicina", "Misterio",
-						"Naturaleza", "Polic\u00EDaco", "Pol\u00EDtica", "Rom\u00E1ntica", "Teatro", "Terror" }));
+		comboTemas = new JComboBox(dlmTemas);
 		comboTemas.setFont(new Font("Tahoma", Font.PLAIN, fuenteComponente));
 		panelDatos.add(comboTemas, "cell 0 2,growx,aligny center");
 
@@ -228,9 +228,8 @@ public class Libreria extends JFrame {
 		
 		btnGestionar = new JButton("Gestionar");
 		panelDatos.add(btnGestionar, "cell 0 2");
-
 		JPanel panelFormato = new JPanel();
-		panelFormato.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		panelFormato.setFont(new Font("Tahoma", Font.PLAIN, fuenteComponente));
 		panelFormato.setBorder(
 				new TitledBorder(null, "Formato", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panelCaracteristicas.add(panelFormato, "cell 1 0,grow");
@@ -312,5 +311,5 @@ public class Libreria extends JFrame {
 			}
 		}
 	};
-	private JButton btnGestionar;
+
 }

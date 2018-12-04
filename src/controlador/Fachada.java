@@ -3,33 +3,48 @@ package controlador;
 import java.util.ArrayList;
 
 import modelo.Libro;
+import modelo.Tema;
 
 public class Fachada {
 	
-	AccionesLibro estanteria;
+	AccionesLibro accionesLibro;
+	AccionesTema accionesTema;
 	
 	public Fachada() {
-		estanteria = new AccionesLibro();
+		accionesLibro = new AccionesLibro();
+		accionesTema = new AccionesTema();
 	}
 	
-	public boolean insertarLibro(Libro libro) {
-		return estanteria.insertarLibro(libro);
+	public boolean insertar(Libro libro) {
+		return accionesLibro.insertarLibro(libro);
 	}
 	
-	public boolean borrarLibro(Libro libro) {
-		return estanteria.borrarLibro(libro);
+	public boolean insertar(Tema tema) {
+		return accionesTema.insertarTema(tema);
 	}
 	
-	public boolean editarLibro(Libro libro) {
-		return estanteria.editarLibro(libro);
+	public boolean borrar(Libro libro) {
+		return accionesLibro.borrarLibro(libro);
 	}
 	
-	public Libro buscarLibro(String isbn) {
-		return estanteria.buscarLibro(isbn);
+	public boolean borrar(Tema tema) {
+		return accionesTema.borrarTema(tema);
+	}
+	
+	public boolean editar(Libro libro) {
+		return accionesLibro.editarLibro(libro);
+	}
+	
+	public Libro buscar(String isbn) {
+		return accionesLibro.buscarLibro(isbn);
 	}
 	
 	public ArrayList<Libro> obtenerLibros() {
-		return estanteria.getLibros();
+		return accionesLibro.getLibros();
+	}
+	
+	public ArrayList<Tema> obtenerTemas() {
+		return accionesTema.getTemas();
 	}
 	
 }

@@ -1,50 +1,47 @@
 package vista;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JPanel;
+import java.awt.*;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import net.miginfocom.swing.MigLayout;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-import javax.swing.JList;
-import javax.swing.JTextField;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JScrollPane;
+import utiles.Mensajes;
 
 public class GestorTema extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
-	private JTextField textField;
+	protected JTextField txtTema;
+	protected JButton btnGuardar;
+	protected JList listTemas;
+	protected JMenuItem mntmAgregarTema;
+	protected JMenuItem mntmEditarTema;
+	protected JMenuItem mntmEliminarTema;
+	protected DefaultListModel<String> dlmTemas = new DefaultListModel<>();
+	protected JLabel lblMensaje;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			GestorTema dialog = new GestorTema();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+//	/**
+//	 * Launch the application.
+//	 */
+//	public static void main(String[] args) {
+//		try {
+//			GestorTema dialog = new ParaGestorTema(null, true);
+//			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+//			dialog.setVisible(true);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 	/**
 	 * Create the dialog.
 	 */
-	public GestorTema() {
+	public GestorTema(Frame parent, boolean modal) {
+		super(parent, modal);
 		setTitle("Gestor de temas");
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		contentPanel.setLayout(new MigLayout("", "[grow]", "[][grow]"));
+		contentPanel.setLayout(new MigLayout("", "[grow]", "[][grow][]"));
 		{
 			JLabel lblTema = new JLabel("Tema:");
 			contentPanel.add(lblTema, "flowx,cell 0 0");
@@ -53,40 +50,24 @@ public class GestorTema extends JDialog {
 			JScrollPane scrollPane = new JScrollPane();
 			contentPanel.add(scrollPane, "cell 0 1,grow");
 			{
-				JList list = new JList();
-				scrollPane.setViewportView(list);
+				listTemas = new JList(dlmTemas);
+				scrollPane.setViewportView(listTemas);
 			}
 		}
 		{
-			textField = new JTextField();
-			contentPanel.add(textField, "cell 0 0,growx");
-			textField.setColumns(10);
+			txtTema = new JTextField();
+			contentPanel.add(txtTema, "cell 0 0,growx");
+			txtTema.setColumns(10);
 		}
 		{
-			JButton btnGuardar = new JButton("Guardar");
+			btnGuardar = new JButton("Guardar");
+			btnGuardar.setVisible(false);
 			contentPanel.add(btnGuardar, "cell 0 0,alignx right");
 		}
 		{
-			JPanel buttonPane = new JPanel();
-			getContentPane().add(buttonPane, BorderLayout.SOUTH);
-			buttonPane.setLayout(new MigLayout("", "[28px,grow][49px][71px]", "[25px]"));
-			{
-				JLabel lblMensaje = new JLabel("Seleccione un tema o creelo");
-				lblMensaje.setHorizontalAlignment(SwingConstants.RIGHT);
-				buttonPane.add(lblMensaje, "cell 0 0,alignx left,aligny center");
-			}
-			{
-				JButton okButton = new JButton("OK");
-				okButton.setActionCommand("OK");
-				buttonPane.add(okButton, "cell 1 0,alignx left,aligny top");
-				getRootPane().setDefaultButton(okButton);
-			}
-			{
-				JButton cancelButton = new JButton("Cancel");
-				cancelButton.setHorizontalAlignment(SwingConstants.LEFT);
-				cancelButton.setActionCommand("Cancel");
-				buttonPane.add(cancelButton, "cell 2 0,alignx left,aligny top");
-			}
+			lblMensaje = new JLabel(Mensajes.MENSAJEGESTORTEMAS);
+			contentPanel.add(lblMensaje, "cell 0 2");
+			lblMensaje.setHorizontalAlignment(SwingConstants.RIGHT);
 		}
 		{
 			JMenuBar menuBar = new JMenuBar();
@@ -95,20 +76,17 @@ public class GestorTema extends JDialog {
 				JMenu mnArchivo = new JMenu("Archivo");
 				menuBar.add(mnArchivo);
 				{
-					JMenuItem mntmAgregarTema = new JMenuItem("Agregar tema");
+					mntmAgregarTema = new JMenuItem("Agregar tema");
 					mnArchivo.add(mntmAgregarTema);
 				}
 				{
-					JMenuItem mntmEditarTema = new JMenuItem("Editar tema");
+					mntmEditarTema = new JMenuItem("Editar tema");
+					mntmEditarTema.setEnabled(false);
 					mnArchivo.add(mntmEditarTema);
 				}
 				{
-					JMenuItem mntmEliminarTema = new JMenuItem("Eliminar tema");
+					mntmEliminarTema = new JMenuItem("Eliminar tema");
 					mnArchivo.add(mntmEliminarTema);
-				}
-				{
-					JMenuItem mntmCerrar = new JMenuItem("Cerrar");
-					mnArchivo.add(mntmCerrar);
 				}
 			}
 		}

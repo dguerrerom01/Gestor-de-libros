@@ -26,7 +26,6 @@ public class AccionesLibro {
 			datosLibro = accesoBD.recuperar("SELECT * FROM libro ORDER BY ISBN");
 			libros.clear();
 			for (HashMap<String, Object> hashMap : datosLibro) {
-				System.out.println(hashMap);
 				libros.add(new Libro(hashMap));
 			}
 		} catch (Exception e) {
@@ -65,7 +64,6 @@ public class AccionesLibro {
 			e.printStackTrace();
 			return false;
 		}
-
 	}
 	
 	/**
